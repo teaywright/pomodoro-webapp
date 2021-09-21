@@ -1,0 +1,9 @@
+Meeting 1: 9/13/21 @ 11:30 AM
+
+Cory explained what the weekly meetings were for, and told us that we would give updates on our progress each week and have a chance to ask any questions we had. Our team went over our top idea for the project, which is to create a productivity or “Pomodoro” clock that would be used on a computer. The idea is that the user could enter the time intervals for working and for their breaks, and the clock would integrate with other applications to automatically switch back and forth between the work and break screens. For example, the clock would integrate with music services like Spotify to play a study playlist while working or with YouTube to play videos while on the break interval. Cory explained that Spotify and YouTube are easier to integrate but other applications like Apple Music could be difficult.
+
+
+
+Meeting 2: 9/20/21 @ 11:30 AM
+
+We told Cory that we officially decided to work on the Pomodoro clock for our project. We also explained that we were meeting tonight to finalize our first milestone, which is our project proposal. Each of us is taking a different part of the proposal and we will check that everyone is good with what our group has together before submitting. Cory suggested that we look through tutorials and think about what to work on for next week.
