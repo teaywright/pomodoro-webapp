@@ -7,3 +7,9 @@ Cory explained what the weekly meetings were for, and told us that we would give
 Meeting 2: 9/20/21 @ 11:30 AM
 
 We told Cory that we officially decided to work on the Pomodoro clock for our project. We also explained that we were meeting tonight to finalize our first milestone, which is our project proposal. Each of us is taking a different part of the proposal and we will check that everyone is good with what our group has together before submitting. Cory suggested that we look through tutorials and think about what to work on for next week.
+
+
+
+Meeting 3: 9/27/21 @ 11:30 AM
+
+We had our first week of standups and we all showed Cory how we had updated our Jira page to include all future milestones in place. Our plan was to use the milestones as our guide for determining what we would work on each week and how much progress we needed to make on the project. Cory told us that using the milestones was not the best way to track our progress and that the milestones were more to give us checkups and make sure that we weren't stagnating on our project. We agreed to rework our Jira page during our group meeting that night and use the course schedule as a guide for what we would be learning each week. That way we could have an idea of when we would be able to implement the different layers of our project stack.
