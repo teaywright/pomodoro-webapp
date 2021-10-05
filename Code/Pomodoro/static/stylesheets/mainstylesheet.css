@@ -1,46 +1,52 @@
 /* 
 Begin work for main.html
  */
-
+/* *{
+    overflow-x: hidden;
+} */
 #mainContainer{
-    overflow: hidden;
-    display: inline-block;
+    display:block;
+    width:200%;
+    height:100%;
 }
 
 .split {
     height: 100%;
-    min-width: 100%;
     position: fixed;
-    z-index: 1;
     top: 0;
-    overflow-x: hidden;
+    width:50%;
     padding-top: 20px;
+    
   }
 .work {
     left:0;
-    width:80%;
     height:100%;
-    position:absolute;
     background-color: black;
-    /* background-image: linear-gradient(to right, #aac8ac, #f5f5f5); */
+    background-image: linear-gradient(to right, #aac8ac, #f5f5f5);
 }
 .animateGrowWork{
     animation:slide-in-left 3s cubic-bezier(.55, .085,.68,.53) 1s both;
 }
 @keyframes slide-in-left{
-    0%{transform:translateX(20%);opacity:.5}
-    100%{transform:translateX(80%);opacity:1}}
+    0%{transform:translateX(-80%);opacity:1}
+    100%{transform:translateX(0%);opacity:1}
+}
 .animateShrinkWork{
     animation:slide-out-left 3s cubic-bezier(.55, .085,.68,.53) 1s both;
 }
 @keyframes slide-out-left{
-    0%{transform:translateX(80%);opacity:1}
-    100%{transform:translateX(20%);opacity:.5}}
-
-
+    0%{transform:translateX(0%);opacity:1}
+    100%{transform:translateX(-80%);opacity:1}
+}
 .chill {
     right:0;
-    width:80%;
-    position:absolute;
     background-image: linear-gradient(to right,#f5f5f5, #aac8ac);
 }
+.animateShrinkChill{
+    animation:slide-out-right 3s cubic-bezier(.55, .085, .68, .53) 1s both;
+}
+@keyframes slide-out-right {
+    0%{transform:translateX(-80%);opacity:0};
+    100%{transform:translateX(0%); opacity: 1}
+}
+
