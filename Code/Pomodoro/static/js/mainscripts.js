@@ -9,7 +9,7 @@ const chill = document.querySelector("chillSide");
 
 //Detect which side is dominant.  1 = working side dominant
 let detectSide = 1;
-function shrinkWork(){
+function switchSides(){
     if(detectSide == 1){
         console.log('inside of shrinkWork()');
         work.classList.remove("animateGrowWork");
@@ -26,4 +26,3 @@ function shrinkWork(){
         detectSide = 1;
     }
 }
-
