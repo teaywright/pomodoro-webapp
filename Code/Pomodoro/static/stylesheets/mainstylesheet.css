@@ -1,22 +1,20 @@
 /* 
 Begin work for main.html
  */
-/* *{
+*{
     overflow-x: hidden;
-} */
+}
 #mainContainer{
     display:block;
     width:200%;
     height:100%;
 }
-
 .split {
     height: 100%;
     position: fixed;
     top: 0;
     width:50%;
     padding-top: 20px;
-    
   }
 .work {
     left:0;
@@ -46,7 +44,54 @@ Begin work for main.html
     animation:slide-out-right 3s cubic-bezier(.55, .085, .68, .53) 1s both;
 }
 @keyframes slide-out-right {
-    0%{transform:translateX(-80%);opacity:0};
+    0%{transform:translateX(-80%);opacity:1};
     100%{transform:translateX(0%); opacity: 1}
 }
+.animateGrowChill{
+    animation:slide-in-right 3s cubic-bezier(.55, .085, .68, .53) 1s both;
+}
+@keyframes slide-in-right {
+    0%{transform:translateX(0%); opacity:1};
+    100%{transform:translateX(-80%); opacity: 1}
+}
 
+
+
+
+/* 
+    BEGIN CSS FOR CLOCK
+*/
+.center{
+    margin: auto;
+    border: 1px solid green;
+}
+#clock {
+    margin-top: 10%;
+    outline: blue groove 1px;
+    height: 25%;
+    width: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+BEGIN CSS FOR MEDIAPLAYER
+*/
+#mediaPlayer {
+    margin-top: 12%;
+    outline: green groove 1px;
+    height:45%;
+    width:70%;
+}

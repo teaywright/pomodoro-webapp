@@ -1,8 +1,12 @@
 <!-- 
     REMINDER:  TO START THE PROJECT:   
-        export FLASK_APP=hello    
+        export FLASK_APP=pomodoro_routing    
         export FLASK_ENV=development  
         flask run
+
+
+    TEMPLATING:
+    Jinja2
  -->
 <!DOCTYPE html>
 <html lang="en">
@@ -14,29 +18,30 @@
     <title>Pomodoro!</title>
 </head>
 <body>
-<!-- Link the nav bar using Jinja :D-->
+<!-- Link the nav bar using Jinja :D  -->
 <div style="width: 100%;">
-<!-- 
+
 {% include './sharedTemplates/navbar.html' %}
- -->
+
+
+ 
 </div>
 <!-- End nav bar -->
-
-
+<p>testing</p>
 <div id="mainContainer">
 <!-- Split into 2:   one for work and one for chill -->
     <div class="split work animateGrowWork" id= "workSide">
-        <h1>Woot the work half!</h1>
-        <button id="workButton" onclick="shrinkWork()">Work Button Grow</button>
+        {% include './sharedTemplates/clock.html' %}        
+        
+        {% include './sharedTemplates/mediaPlayer.html' %}
     </div>
     <div class="split chill animateShrinkChill" id="chillSide">
-        <h1>Woot the Chill half!</h1>
+        {% include './sharedTemplates/clock.html' %}
+        
+        {% include './sharedTemplates/mediaPlayer.html' %}
         <button id="chillButton" onclick="shrinkWork()">Chill Button Grow</button>
     </div>
-
     
-
-
 </div>
 </body>
 
