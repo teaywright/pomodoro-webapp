@@ -1,12 +1,45 @@
+<!-- 
+    REMINDER:  TO START THE PROJECT:   
+        export FLASK_APP=hello    
+        export FLASK_ENV=development  
+        flask run
+ -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="../static/stylesheets/mainstylesheet.css">
+    <title>Pomodoro!</title>
 </head>
 <body>
-    <h1>I'mma test of the home page!!!</h1>
+<!-- Link the nav bar using Jinja :D-->
+<div style="width: 100%;">
+<!-- 
+{% include './sharedTemplates/navbar.html' %}
+ -->
+</div>
+<!-- End nav bar -->
+
+
+<div id="mainContainer">
+<!-- Split into 2:   one for work and one for chill -->
+    <div class="split work animateGrowWork" id= "workSide">
+        <h1>Woot the work half!</h1>
+        <button id="workButton" onclick="shrinkWork()">Work Button Grow</button>
+    <!-- <div class="split chill animateShrinkChill">
+        <h1>Woot the Chill half!</h1>
+        <button id="chillButton" onclick="shrinkWork()">Chill Button Grow</button>
+    </div> -->
+
+    
+
+
+</div>
 </body>
+
+<!-- import all our scripts -->
+{% include './sharedTemplates/scriptLog.html' %}
+
 </html>
