@@ -20,7 +20,6 @@
 <body>
 <!-- Link the nav bar using Jinja :D  -->
 <div style="width: 100%;">
-
 {% include './sharedTemplates/navbar.html' %}
 </div>
 
@@ -30,27 +29,28 @@
 <!-- End nav bar -->
 
 
-
-<div id="mainContainer" class="picture">
-<!-- Split into 2:   one for work and one for chill -->
-    <div class="split work animateGrowWork" id= "workSide">
-        {% include './sharedTemplates/clock.html' %}        
-        {% include './sharedTemplates/mediaPlayer.html' %}
-        <button id="chillButton" onclick="switchSides()">Work Button Grow</button>
-    </div>
-
-
-
-    <div class="split chill animateShrinkChill" id="chillSide">
-        {% include './sharedTemplates/clock.html' %}
-        {% include './sharedTemplates/mediaPlayer.html' %}
-        <button id="chillButton" onclick="switchSides()">Chill Button Grow</button>
-    </div>
-    
-
-
-
+<div class="background">
 </div>
+    <div id="mainContainer" class="picture animateGrowWork">
+    <!-- Split into 2:   one for work and one for chill -->
+        <div class="split work" id= "workSide">
+            {% include './sharedTemplates/clock.html' %}        
+            {% include './sharedTemplates/mediaPlayer.html' %}
+            <button id="chillButton" onclick="switchSides()">Work Button Grow</button>
+        </div>
+
+
+        
+        <div class="split chill" id="chillSide">
+            {% include './sharedTemplates/clock.html' %}
+            {% include './sharedTemplates/mediaPlayer.html' %}
+            <button id="chillButton" onclick="switchSides()">Chill Button Grow</button>
+        </div>
+        
+        
+        
+        
+    </div>
 </body>
 
 <!-- import all our scripts -->
