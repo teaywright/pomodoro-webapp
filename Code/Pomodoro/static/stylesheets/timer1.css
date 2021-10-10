@@ -1,0 +1,44 @@
+/* Button Styles */
+button{
+  background: white;
+  border-radius: 10px;
+  border: none;
+  padding: 15px 30px;
+  font-size: 24px;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  line-height: 1;
+  display: flex;
+}
+
+button:hover{
+  transform: scale(1.05);
+  background: #eee;
+  transition: 0.3s ease all;
+
+}
+
+.countdown{
+  position: relative;
+
+}
+
+.reset{
+  font-size: 12px;
+  padding: 8px 16px;
+  margin: 100px auto 0;
+
+}
+
+
+/* Body Styles */
+
+body{
+  background: darkblue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
