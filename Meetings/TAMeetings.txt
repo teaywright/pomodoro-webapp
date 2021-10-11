@@ -13,3 +13,9 @@ We told Cory that we officially decided to work on the Pomodoro clock for our pr
 Meeting 3: 9/27/21 @ 11:30 AM
 
 We had our first week of standups and we all showed Cory how we had updated our Jira page to include all future milestones in place. Our plan was to use the milestones as our guide for determining what we would work on each week and how much progress we needed to make on the project. Cory told us that using the milestones was not the best way to track our progress and that the milestones were more to give us checkups and make sure that we weren't stagnating on our project. We agreed to rework our Jira page during our group meeting that night and use the course schedule as a guide for what we would be learning each week. That way we could have an idea of when we would be able to implement the different layers of our project stack.
+
+
+
+Meeting 4: 10/4/21 @ 11:30 AM
+
+This week in standups we showed Cory our written wireframe designs for the different project pages. We also demonstrated how we had set up our virtual environment for Flask and got our bare bones project running. Next week we plan on doing the HTML for our login and registration pages, getting our timers and animations working, and starting to wok on linking Spotify and Youtube as well as our database to the project.
