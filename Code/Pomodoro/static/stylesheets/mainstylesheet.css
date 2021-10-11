@@ -23,6 +23,7 @@ Begin work for main.html
  */
 *{
     overflow: hidden;
+    margin: 0;
 }
 .background{
     width:100%;
@@ -30,21 +31,23 @@ Begin work for main.html
     z-index: -2;
     position:absolute;
     background-image: url(../pictures/bamboo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(2px);
     opacity: .6;
-    
 }
 
 #mainContainer{
     width:200%;
-    height:85%;
+    height:94%;
     position: fixed;
-    border: 10px black dotted;
+    
 }
 .split {
     top: 0;
     width:40%;
     padding-top: 20px;
-    border: 5px green solid;
+    
     height:100%;
   }
 .work {
@@ -68,6 +71,27 @@ Begin work for main.html
 .chill {
     right:0;
 }
+.pawWork {
+  position: relative;
+  height:90%;
+  width:10%;
+  z-index: -2;
+  float: right;
+  top: -80%;
+  
+}
+.pawChill {
+  position: relative;
+  height:90%;
+  width:10%;
+  z-index: -2;
+  float: left;
+  transform: rotate(180deg);
+  top: -100%;
+  
+
+
+}
 
 
 
@@ -79,7 +103,7 @@ Begin work for main.html
 */
 .center{
     margin: auto;
-    border: 1px solid green;
+    
 }
 #clock {
     margin-top: 5%;
@@ -87,9 +111,9 @@ Begin work for main.html
     height: 25%;
     width: 30%;
     -webkit-animation: clockEntrance 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 3.5s both;
-	        animation: clockEntrance 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 3.5s both;
+    animation: clockEntrance 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 3.5s both;
 }
- @-webkit-keyframes clockEntrance {
+@-webkit-keyframes clockEntrance {
     0% {
       -webkit-transform: translateY(-50px);
               transform: translateY(-50px);
