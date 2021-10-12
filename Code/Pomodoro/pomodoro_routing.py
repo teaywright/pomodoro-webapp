@@ -24,7 +24,7 @@ def login():
 
 @app.route("/registration")
 def registration():
-    return render_template("registration.html")
+    return render_template("register.html")
 
 
 @app.route("/admin")
