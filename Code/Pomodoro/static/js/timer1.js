@@ -26,6 +26,7 @@ function onClick2(){
     if (distance <= 0) {
         clearInterval(x);
         document.getElementById("countdown").innerHTML = "TIME DONE!";
+        // INSERT HERE THE SWAP COMMAND
     }
     
     }, 1000);
