@@ -8,5 +8,16 @@
 </head>
 <body>
     <h1>admin</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% for item in values %}
+        <p>ID: {{item.userID}}, Name: {{item.username}}, Password: {{item.rawPass}}, Account Created Date: {{item.dateAdded}}</p>
+    {% endfor %}
 </body>
 </html>

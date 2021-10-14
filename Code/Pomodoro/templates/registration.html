@@ -1,12 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<!DOCTYPE html>  
+<html lang="en">  
+<head> 
+    <style>
+        html,body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        input{
+            border-top: 1px solid #312E3D;   
+            border-left: 1px solid #312E3D;   
+            border-right: 1px solid #312E3D;   
+            border-bottom: 1px solid #56536A;
+        }
+        .login{
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            width: 410px
+        }
+        .lefthand{
+            position: absolute;
+            z-index: 1;
+            bottom: 0;
+            left: 120px;
+            background-color: black;
+            height: 700px;
+            width: 200px;
+            border-radius: 150px 150px 0 0;
+        }
+        .righthand{
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            right: 120px;
+            background-color: black;
+            height: 700px;
+            width: 200px;
+            border-radius: 0 0 150px 150px;
+        }
+    </style>
+    <meta charset="UTF-8"> 
+    <title>Registration</title>  
+    <link rel="stylesheet" href="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</head>  
 <body>
-    <h1>registration</h1>
-</body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+    <a id = "navbar" class="navbar-brand">
+        <img class="rounded-circle rounded float-left" src="C:\Users\zyl19\Desktop\111.jpg" alt="" width="30" height="30">
+        </a>
+    </nav>  
+    <div class="login" id="login">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <p>{{msg}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %} 
+        <h1 style="color: white;
+            background-color: black; border-radius: 30px;">Create New Account</h1>
+        <form name="form1" action="" method="post" >
+            <input id= "Username" name="createName" type="text" size="50" style="height: 40px;margin-top: 10px" placeholder="Username"><br><br>
+
+            <input id="Password" name="createPass" type="text" size="50" style="height: 40px" placeholder="Password"><br><br>
+
+            <input id="RetryPassword" name="verifyPass" type="text" size="50" style="height: 40px" placeholder="Re-type Password"><br><br>
+
+            <input id = "button" type="submit" value="Create Account" style="width: 410px;height: 40px;color: white;
+            background-color: black"><br><br>
+            <a>Already have an account?</a>
+            <a href="/login" style="text-decoration: none">Log in</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       </form>
+    </div>
+    <div class = "lefthand"></div>
+    <div class = "righthand"></div>
+</body>  
 </html>
