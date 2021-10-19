@@ -170,16 +170,22 @@ BEGIN CSS FOR MEDIAPLAYER
   margin-top: 5%;
   height:45%;
   width:50%;
-  border-radius: 43px;
-  border-radius: 43px;
-  border-radius: 43px;
-  border-radius: 43px;
-  border-radius: 43px;
-  border-radius: 43px;
-  border-radius: 43px;
-background: #243e2b;
-box-shadow:  25px -25px 50px #1c3021,
-             -25px 25px 50px #2c4c35;
-             /* FOUND AT https://neumorphism.io/ */
-  
+  /* From https://css.glass */
+/* From https://css.glass */
+background: rgba(114, 159, 68, 0.7);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(16.6px);
+-webkit-backdrop-filter: blur(16.6px);
+border: 1px solid rgba(114, 159, 68, 0.67);
+}
+#urlYoutube{
+  color: white;
+  padding: 3%;
+  margin: 5%;
+  width: 30%;
+  border-radius: 15px;
+  box-shadow: inset 20px 20px 78px #618740,
+  inset -20px -20px 78px #83b756;
+  background: #35587b;
 }

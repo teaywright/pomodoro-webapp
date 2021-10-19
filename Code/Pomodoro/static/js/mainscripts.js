@@ -70,18 +70,20 @@ event.target.playVideo();
 // 5. The API calls this function when the player's state changes.
 //    The function indicates that when playing a video (state=1),
 //    the player should play for six seconds and then stop.
+//  ...kinda don't know why I can't delete this....
 var done = false;
 function onPlayerStateChange(event) {
-if (event.data == YT.PlayerState.PLAYING && !done) {
-    setTimeout(stopVideo, 6000);
-    done = true;
+    if (event.data == YT.PlayerState.PLAYING && !done) {
+        setTimeout(stopVideo, 6000);
+        done = true;
+    }
 }
-}
+// Builds a new Youtube IFrame
 var player;
-    function onYouTubeIframeAPIReady() {
+function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-        height: '390',
-        width: '640',
+        height: '50%',
+        width: 'auto',
         videoId: 'M7lc1UVf-VE',
         playerVars: {
         'playsinline': 1
@@ -91,4 +93,16 @@ var player;
         'onStateChange': onPlayerStateChange
         }
     });
-    }
+}
+// Helper function to REGEX and rip out the video ID from the URL regardless of how received.
+function YouTubeGetID(url){
+    url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+    return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+}
+// Function to "change channel" on Youtube
+function changeYoutube(){
+    console.log('inside changeyoutube')
+    let input=YouTubeGetID(document.getElementById("urlYoutube").value);
+    player.loadVideoById(input);
+    document.getElementById("urlYoutube").value = "";
+}
