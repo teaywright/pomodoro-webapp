@@ -5,14 +5,23 @@ Note that I ended the src file in autoplay and loop.  Might need to concatenate 
 
 
 UGH this site does it well: https://www.timer-tab.com/
+
+GOAL1: Leave area up and make user choose between Youtube and Spotify.  Make two buttons
  -->
+
 <div id="mediaPlayer" class="center">
 
-<button id='tempYoutubePlayerButton' onClick='loadDoc()'>Play Youtube Attempt</button>
-<iframe width="100%" height="80%" id="youtubePlayer" https://www.youtube.com/embed/Ar-IEE_DIEo?&autoplay=1&muted=1&loop=1
-allow="autoplay">
+<div id="mediaPlayerChoice">
+    <button class="mediaChoice" onclick=mediaChoice("spotify")>Listen to Spotify?</button>
+    <button class="mediaChoice" onclick=mediaChoice("youtube")>Watch/Listen to Youtube?</button>
+</div>
 
-<p>Imma media player.  ***drum solo***</p>
-</iframe> 
+
+<!-- 
+    SPOTIFY SPACE HOLDER
+-->
+
+
+
 
 </div>

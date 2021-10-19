@@ -26,6 +26,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Each table in the database is a class
+
+
 class User(db.Model):
     userID = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -47,6 +49,8 @@ def main_page():
     return render_template("main.html")
 
 # Checks if a user is already logged in and allows login
+
+
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
@@ -68,7 +72,7 @@ def login():
         else:
             flash("Username not found!")
             return render_template("login.html")
-        
+
     else:
         # Redirects if session saved login
         if "user" in session:
@@ -122,6 +126,11 @@ def admin():
     return render_template("admin.html", values=User.query.all())
     # else:
     # return redirect(url_for("main_page"))
+
+
+@app.route("/youtube")
+def youtube():
+    return render_template("/sharedTemplates/youtube.html")
 
 
 @app.route("/navbar")

@@ -1,5 +1,5 @@
 // Set the date we're counting down to
-var countTime = 60;
+var countTime = 5;
 console.log("working");
 
 
@@ -26,6 +26,7 @@ function onClick2(){
     if (distance <= 0) {
         clearInterval(x);
         document.getElementById("countdown").innerHTML = "TIME DONE!";
+        switchSides();
         // INSERT HERE THE SWAP COMMAND
     }
     

@@ -1,11 +1,3 @@
-<!-- 
-    REMINDER:  TO START THE PROJECT:   
-        export FLASK_APP=pomodoro_routing    
-        export FLASK_ENV=development  
-        flask run
-    TEMPLATING:
-    Jinja2
- -->
  <!DOCTYPE html>
  <html lang="en">
  <head>
@@ -27,33 +19,33 @@
  
  <!-- End nav bar -->
  
- <div class="background">
- </div>
-     <div id="mainContainer" class="picture animateGrowWork">
-     <!-- Split into 2:   one for work and one for chill -->
-         <div class="split work" id= "workSide">
-             {% include './sharedTemplates/clock.html' %}        
-             {% include './sharedTemplates/mediaPlayer.html' %}
-             <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawWork'>
-             <button id="chillButton" onclick="switchSides()">Work Button Grow</button>
-         </div>
- 
- 
-     
-         <div class="split chill" id="chillSide">
-             {% include './sharedTemplates/clock.html' %}
-             {% include './sharedTemplates/mediaPlayer.html' %}
-             <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawChill'>
-             <button id="chillButton" onclick="switchSides()">Chill Button Grow</button>
-         </div>
-         
-         
-         
-         
-     </div>
- </body>
- 
- <!-- import all our scripts -->
- {% include './sharedTemplates/scriptLog.html' %}
- 
- </html>
+<div id="mainBackground" class="background animateGrowWorkBg">
+</div>
+    <div id="mainContainer" class="picture animateGrowWork">
+    <!-- Split into 2:   one for work and one for chill -->
+        <div class="split work" id= "workSide">
+            {% include './sharedTemplates/clock.html' %}        
+            {% include './sharedTemplates/mediaPlayer.html' %}
+            <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawWork'>
+            <button id="chillButton" onclick="switchSides()">Work Button Grow</button>
+        </div>
+
+
+    
+        <div class="split chill" id="chillSide">
+            {% include './sharedTemplates/clock.html' %}
+            {% include './sharedTemplates/mediaPlayer.html' %}
+            <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawChill'>
+            <button id="chillButton" onclick="switchSides()">Chill Button Grow</button>
+        </div>
+        
+        
+        
+        
+    </div>
+</body>
+
+<!-- import all our scripts -->
+{% include './sharedTemplates/scriptLog.html' %}
+
+</html>
