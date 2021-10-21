@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/stylesheets/mainstylesheet.css">
+    <title>Spotify Login</title>
+</head>
+<body>
+    <div>
+        <div class="center spotify-login-container">
+            <div><h2>Pomodoro!</h2><br></div>
+            <button class="center spotify-login-button" onclick="spotify_authorize('{{ auth_url }}')">Login to Spotify</button>
+        </div>
+    </div>
+</body>
+
+<script>
+    function spotify_authorize(auth_url) {
+        location.replace(auth_url);
+    }
+</script>
+</html>

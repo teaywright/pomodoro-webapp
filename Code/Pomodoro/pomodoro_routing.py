@@ -8,9 +8,36 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
+# imports used for/with spotify api
+import os
+from flask import Flask, session, request, redirect, render_template
+# from flask_session import Session
+import spotipy as sp
+import uuid
+from spotipy.oauth2 import SpotifyOAuth
+
+os.environ["SPOTIPY_CLIENT_ID"]='8949721794b24206a0147b227653e819'
+os.environ["SPOTIPY_CLIENT_SECRET"]='a86723e66f584dea8628741f7b09a4ce'
+os.environ["SPOTIPY_REDIRECT_URI"]='http://127.0.0.1:5000/spotify-auth'
+
+sp_scope = 'playlist-read-private'
 
 # __name__ is just a built in flask variable to be similar to a "Main" function
 app = Flask(__name__)
+
+# more spotify
+# app.config['SECRET_KEY'] = os.urandom(64)
+# app.config['SESSION_TYPE'] = 'filesystem'
+# app.config['SESSION_FILE_DIR'] = './.flask_session/'
+# Session(app)
+
+caches_folder = './.spotify_caches/'
+if not os.path.exists(caches_folder):
+    os.makedirs(caches_folder)
+
+def session_cache_path():
+    print("UUID 1: ", session['uuid'])
+    return caches_folder + session.get('uuid')
 
 # Secret key is needed for encryption with post methods
 app.secret_key = "secretKey"
@@ -48,9 +75,13 @@ class User(db.Model):
 def main_page():
     return render_template("main.html")
 
+
+@app.route("/navbar")
+def navbar():
+    return render_template("navbar.html")
+
+
 # Checks if a user is already logged in and allows login
-
-
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
@@ -98,6 +129,13 @@ def logout():
         flash(f"You have been logged out, {user}!", "info")
     session.pop("user", None)
     # 2nd parameter is optional, options: info, warning, error
+
+    #clear spotify caches
+    try:
+      os.remove(f".cache")
+      app.config['SPOTIFY_USER_TOKEN'] = "null"
+    except OSError as e:
+        print ("Error: %s - %s." % (e.filename, e.strerror))       
     return redirect(url_for("login"))
 
 
@@ -127,15 +165,95 @@ def admin():
     # else:
     # return redirect(url_for("main_page"))
 
-
+""" YOUTUBE endpoints """
 @app.route("/youtube")
 def youtube():
     return render_template("/sharedTemplates/youtube.html")
 
 
-@app.route("/navbar")
-def navbar():
-    return render_template("navbar.html")
+
+""" SPOTIFY endpoints"""
+@app.route("/spotify-auth")
+@app.route("/spotify-auth/<code>")  # for when spotify auth returns authorization code
+def spotify_auth():
+    print("spot auth enter....")
+    auth_manager = sp.oauth2.SpotifyOAuth(scope=sp_scope, show_dialog=True)
+    token={}
+    if request.args.get("code"):
+        # Step 3. Being redirected from Spotify auth page
+        token = auth_manager.get_access_token(request.args.get("code"))
+        app.config['SPOTIFY_USER_TOKEN']=token
+    
+    if not auth_manager.validate_token(token):
+        # Step 2. Display sign in link when no token
+        auth_url = auth_manager.get_authorize_url()
+        return render_template('spotify_login.html',auth_url=auth_url)
+
+
+    #getplaylists
+    spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
+    playlists = spfy.current_user_playlists()
+
+    default_playlist=playlists['items'][0]['id']
+    user_name = spfy.me()["display_name"]
+    print("spotify_auth::playlists: ", playlists)
+    print("spotify_auth::playlist: ", default_playlist)
+    print("spotify_auth::username: ", user_name)
+    return render_template("main.html",
+                            playlists=playlists, 
+                            playlist_id=default_playlist, 
+                            user_name=user_name,
+                            message=None)
+
+
+@app.route("/playlists")
+def user_playlists():
+    print("/playlists::")
+    playlists=None
+    default_playlist = None
+    user_name=None
+    message=None
+
+    try:
+        token = app.config['SPOTIFY_USER_TOKEN']
+        print("/playlists::GOT Token")
+    except:
+        token = None
+    if token:
+        print("/playlists::GOT Token")
+        spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
+        playlists = spfy.current_user_playlists()
+        print ("PLAYLISTs::playlists ", playlists)
+        # note: playlists are returned in reverse order
+        default_playlist = playlists['items'][0]['id']
+        user_name = spfy.me()["display_name"]
+        print("PLAYLISTS::default_playlist: ", playlists['items'][0])
+        #return { "playlist ID": playlists['items'][0]['id']}
+    else:
+        message="Please log into your spotify account."   
+
+    return render_template("main.html", 
+                            playlists=playlists, 
+                            playlist_id=default_playlist, 
+                            user_name=user_name, 
+                            message=message)
+
+@app.route('/playlist/<id>/')
+def get_playlist(id):
+    print("/playlist::")
+    spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
+    playlists = spfy.current_user_playlists()
+    playlist = spfy.playlist(id)
+    print ("/playlist::playlist ", playlist)
+    return render_template("main.html",
+                            playlists=playlists, 
+                            playlist_id=playlist["id"],
+                            user_name=None,
+                            message=None)
+
+
+
+
 
 
 # app.run(debug=True)       Commented out for testing db

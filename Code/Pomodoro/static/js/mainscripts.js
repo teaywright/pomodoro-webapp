@@ -39,6 +39,13 @@ function mediaChoice(userChoice){
     if(userChoice == "youtube"){
         loadYoutube();
     }
+    if(userChoice == "spotify"){
+        loadSpotify();
+    }
+}
+
+function loadSpotify(){
+    location.replace("/spotify-auth");
 }
 // Asynch load youtube:
 function loadYoutube(){

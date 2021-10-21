@@ -1,48 +1,40 @@
- <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="../static/stylesheets/mainstylesheet.css">
-     <link rel="stylesheet" href="../static/stylesheets/timer1.css">
-     <title>Pomodoro!</title>
- </head>
- <body>
- <!-- Link the nav bar using Jinja :D  -->
- <div style="width: 100%;">
- {% include './sharedTemplates/navbar.html' %}
- </div>
- 
- 
- 
- 
- <!-- End nav bar -->
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/stylesheets/mainstylesheet.css">
+    <link rel="stylesheet" href="../static/stylesheets/timer1.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='pictures/panda_logo_visible.ico') }}">
+    <title>Pomodoro!</title>
+</head>
+<body>
+<!-- Link the nav bar using Jinja :D  -->
+<div style="width: 100%;">
+{% include './sharedTemplates/navbar.html' %}
+</div>
+
+<!-- End nav bar -->
+
 <div id="mainBackground" class="background animateGrowWorkBg">
 </div>
-    <div id="mainContainer" class="picture animateGrowWork">
-    <!-- Split into 2:   one for work and one for chill -->
-        <div class="split work" id= "workSide">
-            {% include './sharedTemplates/clock.html' %}        
-            {% include './sharedTemplates/mediaPlayer.html' %}
-            <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawWork'>
-            <button id="chillButton" onclick="switchSides()">Work Button Grow</button>
-        </div>
-
-
-    
-        <div class="split chill" id="chillSide">
-            {% include './sharedTemplates/clock.html' %}
-            {% include './sharedTemplates/mediaPlayer.html' %}
-            <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawChill'>
-            <button id="chillButton" onclick="switchSides()">Chill Button Grow</button>
-        </div>
-        
-        
-        
-        
-    </div>
+   <div id="mainContainer" class="picture animateGrowWork">
+   <!-- Split into 2:   one for work and one for chill -->
+       <div class="split work" id= "workSide">
+           {% include './sharedTemplates/clock.html' %}        
+           {% include './sharedTemplates/mediaPlayer.html' %}
+           <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawWork'>
+           <button id="chillButton" class="workbutton" onclick="switchSides()">Work Button Grow</button>
+       </div>
+       <div class="split chill" id="chillSide">
+           {% include './sharedTemplates/clock.html' %}
+           {% include './sharedTemplates/mediaPlayer.html' %}
+           <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawChill'>
+           <button id="chillButton" class="chillbutton" onclick="switchSides()">Chill Button Grow</button>
+       </div>
+       
+   </div>
 </body>
 
 <!-- import all our scripts -->
