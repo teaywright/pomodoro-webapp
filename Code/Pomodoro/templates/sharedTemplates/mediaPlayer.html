@@ -20,8 +20,8 @@ GOAL1: Leave area up and make user choose between Youtube and Spotify.  Make two
         <!-- 
             SPOTIFY SPACE HOLDER
         -->
-        {% if user_name != None %}
-        {% include './sharedTemplates/spotify.html' %}
+        {% if (spotify_activated == 1) %}
+            {% include './sharedTemplates/spotify.html' %}
         {% endif %}
     </div>
 </div>

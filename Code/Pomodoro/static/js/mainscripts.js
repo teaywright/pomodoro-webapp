@@ -3,6 +3,7 @@ const work = document.getElementById("workSide");
 const chill = document.querySelector("chillSide");
 const mainContainer = document.getElementById("mainContainer");
 const mainBackground = document.getElementById("mainBackground");
+const sideSwapSound = new Audio('static/sound/service-bell_daniel_simion.mp3');
 //Detect which side is dominant.  1 = working side dominant
 let detectSide = 1;
 function switchSides(){
@@ -11,7 +12,7 @@ function switchSides(){
         mainContainer.classList.add("animateShrinkWork");
         mainBackground.classList.remove("animateGrowWorkBg");
         mainBackground.classList.add("animateShrinkWorkBg");
-        
+        sideSwapSound.play();        
         detectSide = 0;
         player.pauseVideo();
     } else {
@@ -19,15 +20,10 @@ function switchSides(){
         mainContainer.classList.remove("animateShrinkWork");
         mainBackground.classList.add("animateGrowWorkBg");
         mainBackground.classList.remove("animateShrinkWorkBg");
+        sideSwapSound.play();
         detectSide = 1;
     }
 }
-
-
-
-
-
-
 
 
 // 
@@ -44,16 +40,32 @@ function mediaChoice(userChoice){
     }
 }
 
+//Remove Youtube to return to maindiv
+function returnMain(){
+    $( "#mediaPlayer-container" ).load("/mediaPlayer #mediaPlayer-container > *");
+    
+}
+
+// AJAX spotify section:
 function loadSpotify(){
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if(xhr.readyState === 4){
+            document.getElementById('mediaPlayer-container').innerHTML = xhr.responseText;
+        }
+    };
+    xhr.open('GET', '/spotify');
+    xhr.send();
     location.replace("/spotify-auth");
 }
+
 // Asynch load youtube:
 function loadYoutube(){
     //Asynch
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
         if(xhr.readyState === 4){
-            document.getElementById('mediaPlayer').innerHTML = xhr.responseText;
+            document.getElementById('mediaPlayer-container').innerHTML = xhr.responseText;
             onYouTubeIframeAPIReady();
         }
     };
@@ -91,7 +103,7 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: '50%',
         width: 'auto',
-        videoId: 'M7lc1UVf-VE',
+        videoId: '5qap5aO4i9A',
         playerVars: {
         'playsinline': 1
         },

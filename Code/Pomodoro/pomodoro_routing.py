@@ -16,9 +16,9 @@ import spotipy as sp
 import uuid
 from spotipy.oauth2 import SpotifyOAuth
 
-os.environ["SPOTIPY_CLIENT_ID"]='8949721794b24206a0147b227653e819'
-os.environ["SPOTIPY_CLIENT_SECRET"]='a86723e66f584dea8628741f7b09a4ce'
-os.environ["SPOTIPY_REDIRECT_URI"]='http://127.0.0.1:5000/spotify-auth'
+os.environ["SPOTIPY_CLIENT_ID"] = '8949721794b24206a0147b227653e819'
+os.environ["SPOTIPY_CLIENT_SECRET"] = 'a86723e66f584dea8628741f7b09a4ce'
+os.environ["SPOTIPY_REDIRECT_URI"] = 'http://127.0.0.1:5000/spotify-auth'
 
 sp_scope = 'playlist-read-private'
 
@@ -35,9 +35,11 @@ caches_folder = './.spotify_caches/'
 if not os.path.exists(caches_folder):
     os.makedirs(caches_folder)
 
+
 def session_cache_path():
     print("UUID 1: ", session['uuid'])
     return caches_folder + session.get('uuid')
+
 
 # Secret key is needed for encryption with post methods
 app.secret_key = "secretKey"
@@ -79,6 +81,11 @@ def main_page():
 @app.route("/navbar")
 def navbar():
     return render_template("navbar.html")
+
+
+@app.route('/mediaPlayer')
+def mediaPlayer():
+    return render_template("sharedTemplates/mediaPlayer.html")
 
 
 # Checks if a user is already logged in and allows login
@@ -130,12 +137,12 @@ def logout():
     session.pop("user", None)
     # 2nd parameter is optional, options: info, warning, error
 
-    #clear spotify caches
+    # clear spotify caches
     try:
-      os.remove(f".cache")
-      app.config['SPOTIFY_USER_TOKEN'] = "null"
+        os.remove(f".cache")
+        app.config['SPOTIFY_USER_TOKEN'] = "null"
     except OSError as e:
-        print ("Error: %s - %s." % (e.filename, e.strerror))       
+        print("Error: %s - %s." % (e.filename, e.strerror))
     return redirect(url_for("login"))
 
 
@@ -165,54 +172,64 @@ def admin():
     # else:
     # return redirect(url_for("main_page"))
 
+
 """ YOUTUBE endpoints """
+
+
 @app.route("/youtube")
 def youtube():
     return render_template("/sharedTemplates/youtube.html")
 
 
+@app.route("/spotify")
+def spotify():
+    return render_template("/sharedTemplates/spotify.html")
+
 
 """ SPOTIFY endpoints"""
+
+
 @app.route("/spotify-auth")
-@app.route("/spotify-auth/<code>")  # for when spotify auth returns authorization code
+# for when spotify auth returns authorization code
+@app.route("/spotify-auth/<code>")
 def spotify_auth():
     print("spot auth enter....")
     auth_manager = sp.oauth2.SpotifyOAuth(scope=sp_scope, show_dialog=True)
-    token={}
+    token = {}
     if request.args.get("code"):
         # Step 3. Being redirected from Spotify auth page
         token = auth_manager.get_access_token(request.args.get("code"))
-        app.config['SPOTIFY_USER_TOKEN']=token
-    
+        app.config['SPOTIFY_USER_TOKEN'] = token
+
     if not auth_manager.validate_token(token):
         # Step 2. Display sign in link when no token
         auth_url = auth_manager.get_authorize_url()
-        return render_template('spotify_login.html',auth_url=auth_url)
+        return render_template('spotify_login.html', auth_url=auth_url)
 
-
-    #getplaylists
+    # getplaylists
     spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
     playlists = spfy.current_user_playlists()
 
-    default_playlist=playlists['items'][0]['id']
+    default_playlist = playlists['items'][0]['id']
     user_name = spfy.me()["display_name"]
     print("spotify_auth::playlists: ", playlists)
     print("spotify_auth::playlist: ", default_playlist)
     print("spotify_auth::username: ", user_name)
     return render_template("main.html",
-                            playlists=playlists, 
-                            playlist_id=default_playlist, 
-                            user_name=user_name,
-                            message=None)
+                           playlists=playlists,
+                           playlist_id=default_playlist,
+                           user_name=user_name,
+                           message=None,
+                           spotify_activated=1)
 
 
 @app.route("/playlists")
 def user_playlists():
     print("/playlists::")
-    playlists=None
+    playlists = None
     default_playlist = None
-    user_name=None
-    message=None
+    user_name = None
+    message = None
 
     try:
         token = app.config['SPOTIFY_USER_TOKEN']
@@ -223,20 +240,21 @@ def user_playlists():
         print("/playlists::GOT Token")
         spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
         playlists = spfy.current_user_playlists()
-        print ("PLAYLISTs::playlists ", playlists)
+        print("PLAYLISTs::playlists ", playlists)
         # note: playlists are returned in reverse order
         default_playlist = playlists['items'][0]['id']
         user_name = spfy.me()["display_name"]
         print("PLAYLISTS::default_playlist: ", playlists['items'][0])
-        #return { "playlist ID": playlists['items'][0]['id']}
+        # return { "playlist ID": playlists['items'][0]['id']}
     else:
-        message="Please log into your spotify account."   
+        message = "Please log into your spotify account."
 
-    return render_template("main.html", 
-                            playlists=playlists, 
-                            playlist_id=default_playlist, 
-                            user_name=user_name, 
-                            message=message)
+    return render_template("main.html",
+                           playlists=playlists,
+                           playlist_id=default_playlist,
+                           user_name=user_name,
+                           message=message)
+
 
 @app.route('/playlist/<id>/')
 def get_playlist(id):
@@ -244,16 +262,12 @@ def get_playlist(id):
     spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
     playlists = spfy.current_user_playlists()
     playlist = spfy.playlist(id)
-    print ("/playlist::playlist ", playlist)
+    print("/playlist::playlist ", playlist)
     return render_template("main.html",
-                            playlists=playlists, 
-                            playlist_id=playlist["id"],
-                            user_name=None,
-                            message=None)
-
-
-
-
+                           playlists=playlists,
+                           playlist_id=playlist["id"],
+                           user_name=None,
+                           message=None)
 
 
 # app.run(debug=True)       Commented out for testing db

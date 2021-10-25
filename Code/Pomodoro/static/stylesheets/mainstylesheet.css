@@ -154,6 +154,10 @@ padding: 5px;
 border-radius: 15px;
 }
 
+#videoChooseInput {
+  flex-direction: column;
+}
+
 #mediaPlayer-container {
 display:flex;
 margin: auto;  
@@ -161,13 +165,38 @@ padding: 5px;
 height:45%;
 width:50%;
 /* From https://css.glass */
-/* From https://css.glass */
 background: rgba(114, 159, 68, 0.7);
 border-radius: 16px;
 box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 backdrop-filter: blur(16.6px);
 -webkit-backdrop-filter: blur(16.6px);
 border: 1px solid rgba(114, 159, 68, 0.67);
+}
+
+.videoStored{
+  scrollbar-color: #8A3A63 #3a638a;
+  max-height: 50%;
+  font-size: large;
+  margin: 5% 5% 5% 5%;
+  padding: 20px 0 0 20px;
+  opacity: .8;
+  color: white;
+  overflow-y: auto;
+  border-radius: 15px;
+    background: #63893a;
+    box-shadow: inset 24px 24px 48px #32461e,
+            inset -24px -24px 48px #94cc56;
+}
+.videoStored::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #3a638a;
+}
+
+.videoStored::-webkit-scrollbar-thumb{
+  background:#8A3A63;
+  border-radius: 45%;
+
 }
 
 #mediaPlayer {
@@ -180,6 +209,10 @@ border-radius: 15px;
 /* box-shadow: inset 20px 20px 85% #618740, 
 inset -20px -20px 85% #83b756; */
 background: #35587b;
+}
+
+#urlYoutube{
+  min-width: 80%;
 }
 
 .spotify-container{
