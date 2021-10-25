@@ -19,3 +19,20 @@ We had our first week of standups and we all showed Cory how we had updated our 
 Meeting 4: 10/4/21 @ 11:30 AM
 
 This week in standups we showed Cory our written wireframe designs for the different project pages. We also demonstrated how we had set up our virtual environment for Flask and got our bare bones project running. Next week we plan on doing the HTML for our login and registration pages, getting our timers and animations working, and starting to wok on linking Spotify and Youtube as well as our database to the project.
+
+
+Meeting 5: 10/11/21 @ 11:30 AM
+
+Our group decided to give our midterm presentation despite being given an extension to next week. We demonstrated our Spotify login integration, timer with countdown, SQLite database storing users, animation on main page, and our login and registration pages. The things we most need to work on next are adding more CSS for all pages, integrating our database, refining how the user selects Spotify playlists, and encrypting passwords. Our group also needs to get a better understanding of how to handle merge conflicts when working witth Github.
+
+
+
+Meeting 6: 10/18/21 @ 11:30 AM
+
+This week we showed our architectural diagram, and Cory gave us some advice on some things to change. He recommended that we focus more on the technologies being used rather than the files that are in each component. He also said that we should focus on how the different technologies we are using communicate with each other.
+
+
+
+Meeting 7: 10/25/21 @ 11:30 AM
+
+Our group demonstrated updates to our main page as well as our updated architecture diagram. On the main page, we have now integrated the Spotify playlists and YouTube videos so they can be viewed embedded in the page. We also have a text box to input YouTube video URLs, and we have buttons that can begin the timer on the page. Cory pointed out that it was difficult to read some of the text on our green background, and suggested that we could change the backgrounds of our div containers and buttons as well as blur them. That way we could still see the blurred bamboo backround and our text would be more visible. Cory also showed us an example of an architecture diagram that demonstrated how we could add borders to encompass the technologies in a component. He explained that an architecture diagram makes it easier to see the communication needs betweeen technologies. He said that overall our group was doing well.
