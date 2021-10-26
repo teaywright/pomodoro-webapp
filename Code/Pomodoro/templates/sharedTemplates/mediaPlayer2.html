@@ -1,0 +1,30 @@
+<!-- 
+Anything you enter in this file will be duplicated in main.html on both sides
+Note that I ended the src file in autoplay and loop.  Might need to concatenate the user's videos with that when switch sides? 
+
+
+
+UGH this site does it well: https://www.timer-tab.com/
+
+GOAL1: Leave area up and make user choose between Youtube and Spotify.  Make two buttons
+ -->
+
+ <div id="mediaPlayer-container" class="center">
+    <div>    
+       <div id="mediaPlayerChoice">
+            <button id="spotify" class="mediaChoice choice-button" onclick="mediaChoice('spotify')">Listen to Spotify?</button>
+            <button id="youtube" class="mediaChoice choice-button" onclick="mediaChoice('youtube')">Watch/Listen to Youtube?</button> 
+        </div>
+        
+       
+        <!-- 
+            SPOTIFY SPACE HOLDER
+        -->
+        {% if (spotify_activated == 1) %}
+            {% include './sharedTemplates/spotify.html' %}
+        {% endif %}
+    </div>
+</div>
+
+   
+   
