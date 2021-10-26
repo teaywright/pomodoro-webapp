@@ -26,6 +26,13 @@ function switchSides(){
 }
 
 
+function changeP1(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/logo.png)";
+}
+function changeP2(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/bamboo.jpg)";
+}
+
 // 
 //  Begin JS for Media Player
 // 

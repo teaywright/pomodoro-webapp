@@ -26,6 +26,16 @@
            {% include './sharedTemplates/mediaPlayer.html' %}
            <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawWork'>
            <button id="chillButton" class="workbutton" onclick="switchSides()">Work Button Grow</button>
+
+           <div id="ex1" class="modal">
+                <div class="modal-header">
+                    <h4 class="modal-title">CHOOSE YOUR BACKGROUND</h4>
+                </div>
+                <button onclick = "changeP1()">LOGO</button>
+                <button onclick = "changeP2()">bamboo</button>
+            </div>
+
+            <button><a href="#ex1" rel="modal:open">Customization</a></button>
        </div>
        <div class="split chill" id="chillSide">
            {% include './sharedTemplates/clock.html' %}
