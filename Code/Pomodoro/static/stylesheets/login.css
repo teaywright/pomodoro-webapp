@@ -1,0 +1,17 @@
+/* navbar copy */
+/**{
+    overflow: hidden;
+    margin: 0;
+}
+*/
+.background{
+    width:100%;
+    height:100%;
+    position:absolute;
+    background-image: url(../pictures/bamboo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: blur(5px);
+    opacity: .6;
+    z-index: -2;
+}
