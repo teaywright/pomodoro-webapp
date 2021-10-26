@@ -50,6 +50,14 @@ If not, then type:
 ```pip install flask```        (remember the 3 if you need to!!!)
 
 
+You will also need:
+
+```pip install flask-sqlalchemy```
+
+```pip install bcrypt```
+
+```pip install spotipy```
+
 
 Following Commands are through Bash in Windows.  If you are using something else please use ​​  to see your translation
 
