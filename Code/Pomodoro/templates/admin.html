@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel='icon' href='../../static/pictures/panda_logo_visible.ico' type='image/x-icon'/>
+    <link rel="stylesheet" href="../static/stylesheets/navbar.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
+    <div style="width: 100%;">
+        {% include './sharedTemplates/navbar.html' %}
+    </div>
     <h1>admin</h1>
     {% with messages = get_flashed_messages() %}
         {% if messages %}

@@ -2,12 +2,18 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="../static/stylesheets/mainstylesheet.css">
+    <link rel='icon' href='../../static/pictures/panda_logo_visible.ico' type='image/x-icon'/>
+    <link rel="stylesheet" href="../static/stylesheets/navbar.css">
     <title>Spotify Login</title>
 </head>
 <body>
+    <div style="width: 100%;">
+        {% include './sharedTemplates/navbar.html' %}
+    </div>
+    <div class="background"></div> 
     <div>
         <div class="center spotify-login-container">
-            <div><h2>Pomodoro!</h2><br></div>
+            <div><h2 style="color: white;">Pomodoro!</h2><br></div>
             <button class="center spotify-login-button" onclick="spotify_authorize('{{ auth_url }}')">Login to Spotify</button>
         </div>
     </div>

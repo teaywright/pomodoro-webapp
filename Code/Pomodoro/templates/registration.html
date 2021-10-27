@@ -1,6 +1,9 @@
 <!DOCTYPE html>  
 <html lang="en">  
 <head> 
+    <link rel="stylesheet" href="../static/stylesheets/login.css">
+    <link rel='icon' href='../../static/pictures/panda_logo_visible.ico' type='image/x-icon'/>
+    <link rel="stylesheet" href="../static/stylesheets/navbar.css">
     <style>
         html,body {
             width: 100%;
@@ -35,13 +38,41 @@
         }
         .righthand{
             position: absolute;
-            z-index: 1;
-            top: 0;
+            z-index: -1;
+            top: 5%;
             right: 120px;
             background-color: black;
             height: 700px;
             width: 200px;
             border-radius: 0 0 150px 150px;
+            
+        }
+        .mainContainer2{
+            margin-top: 150px;
+            display: flex;
+            position: inherit;
+            justify-content:center;
+        }
+        .mainContainer{
+            margin-top: 150px;
+            display: flex;
+            position: inherit;
+            justify-content:center;
+        }
+        .card-2{
+            background-color: white;
+            float: center;
+            width: 24%;
+            height: 380px;
+            border-radius: 15px;
+        }
+        .logo2{
+            width: 100%;
+            height: 100px;
+            position:relative;
+            float: top;
+            margin-left: 34%;
+            z-index: 2;
         }
     </style>
     <meta charset="UTF-8"> 
@@ -50,33 +81,41 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
 </head>  
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-    <a id = "navbar" class="navbar-brand">
-        <img class="rounded-circle rounded float-left" src="C:\Users\zyl19\Desktop\111.jpg" alt="" width="30" height="30">
-        </a>
-    </nav>  
-    <div class="login" id="login">
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                {% for msg in messages %}
-                    <p>{{msg}}</p>
-                {% endfor %}
-            {% endif %}
-        {% endwith %} 
-        <h1 style="color: white;
-            background-color: black; border-radius: 30px;">Create New Account</h1>
-        <form name="form1" action="" method="post" >
-            <input id= "Username" name="createName" type="text" size="50" style="height: 40px;margin-top: 10px" placeholder="Username"><br><br>
+    <div style="width: 100%;">
+        {% include './sharedTemplates/navbar.html' %}
+    </div>
+    <div class="background"></div> 
+    <div class="mainContainer2" id="mainContainer2">
+        <div class="logo2" id="logo2">
+            <img src="../static/pictures/panda_logo_visible.png" alt="" width="600" height="300">
+        </div>
+    </div>
+    <div class="mainContainer" id="mainContainer">
+    <div class="card-2" id="card-2">
+        <div class="login" id="login">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <p>{{msg}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %} 
+            <h1 style="color: white;
+                background-color: black; border-radius: 30px;">Create New Account</h1>
+            <form name="form1" action="" method="post" >
+                <input id= "Username" name="createName" type="text" size="50" style="height: 40px;margin-top: 10px" placeholder="Username"><br><br>
 
-            <input id="Password" name="createPass" type="text" size="50" style="height: 40px" placeholder="Password"><br><br>
+                <input id="Password" name="createPass" type="text" size="50" style="height: 40px" placeholder="Password"><br><br>
 
-            <input id="RetryPassword" name="verifyPass" type="text" size="50" style="height: 40px" placeholder="Re-type Password"><br><br>
+                <input id="RetryPassword" name="verifyPass" type="text" size="50" style="height: 40px" placeholder="Re-type Password"><br><br>
 
-            <input id = "button" type="submit" value="Create Account" style="width: 410px;height: 40px;color: white;
-            background-color: black"><br><br>
-            <a>Already have an account?</a>
-            <a href="/login" style="text-decoration: none">Log in</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       </form>
+                <input id = "button" type="submit" value="Create Account" style="width: 410px;height: 40px;color: white;
+                background-color: black"><br><br>
+                <a>Already have an account?</a>
+                <a href="/login" style="text-decoration: none">Log in</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </form>
+        </div>
+    </div>
     </div>
     <div class = "lefthand"></div>
     <div class = "righthand"></div>

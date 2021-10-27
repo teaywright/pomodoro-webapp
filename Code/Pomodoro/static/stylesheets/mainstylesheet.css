@@ -1,26 +1,15 @@
 /* 
 Begin work for the navbar
  */
- #navbar{
-  background-color: gray; 
-  display: block;
-  max-height:10%;
-  width: 100%;
-  min-width:100% !important;
-}
-#logoNavbar{
-  max-height: 50px;
-  width:auto;
-  opacity:1;
-}
+
 
 
 /* 
 Begin work for main.html
-*/
+ */
 *{
-  overflow: hidden;
-  margin: 0;
+    overflow: hidden;
+    margin: 0;
 }
 .background{
   width:120%;
@@ -31,6 +20,7 @@ Begin work for main.html
   background-repeat: no-repeat;
   background-size: cover;
   filter: blur(5px);
+
 }
 
 #mainContainer{
@@ -81,6 +71,7 @@ animation:slide-out-left-bg 3s cubic-bezier(.55, .085,.68,.53) 1s both;
 .chill {
   right:0;
 }
+/*
 .pawWork {
 position: relative;
 height:90%;
@@ -91,18 +82,40 @@ top: -75%;
 
 }
 .pawChill {
-position: relative;
-height:90%;
-width:10%;
-z-index: -2;
-float: left;
-transform: rotate(180deg);
-top: -100%;
+  position: relative;
+  height:90%;
+  width:10%;
+  z-index: -2;
+  float: left;
+  transform: rotate(180deg);
+  top: -100%;
+}
+*/
+.lefthand{
+  position: relative;
+  z-index: 1;
+  bottom: 500px;
+  float:right;
+  margin-right: 20px;
+  background-color: black;
+  height: 700px;
+  width: 200px;
+  border-radius: 150px 150px 0 0;
+}
+.righthand{
+  position: relative;
+  z-index: 1;
+  top: -800px;
+  margin-left: 20px;
+  float:left;
+  background-color: black;
+  height: 750px;
+  width: 200px;
+  border-radius: 0 0 150px 150px;
+  
 }
 
-.workbutton, .chillbutton {
-  border-radius: 15px;
-}
+
 
 /* 
   BEGIN CSS FOR CLOCK
@@ -317,9 +330,11 @@ Begin work for modal
   vertical-align: middle;
   margin-right: -0.05em;
 }
+/*
 .blocker.behind {
   
 }
+*/
 .modal {
   display: none;
   vertical-align: middle;
