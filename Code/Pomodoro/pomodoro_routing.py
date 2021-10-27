@@ -8,10 +8,11 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
+import bcrypt
 # imports used for/with spotify api
 import os
 from flask import Flask, session, request, redirect, render_template
-# from flask_session import Session
+from flask_session import Session
 import spotipy as sp
 import uuid
 from spotipy.oauth2 import SpotifyOAuth
@@ -55,26 +56,72 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Each table in the database is a class
-
-
 class User(db.Model):
     userID = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
-    rawPass = db.Column(db.String(20), nullable=False)
-    dateAdded = db.Column(db.DateTime, default=datetime.utcnow)
+    hashedPass = db.Column(db.String(50), nullable=False)
+    dateAdded = db.Column(db.Date, default=datetime.utcnow)
+    isAdmin = db.Column(db.Boolean, default=False, nullable=False)
+    videos = db.relationship('Video', backref='user')
 
     def __init__(self, username, password):
         self.username = username
-        self.rawPass = password
+        self.hashedPass = password
 
-    # Function to return string when we add something
-    def __repr__(self):
-        return f"User('{self.userID}', '{self.username}', '{self.rawPass}', '{self.dateAdded}')"
+
+#class Playlist(db.Model):
+#    playlistID = db.Column(db.Integer, primary_key=True)
+#    playlistName = db.Column(db.String(20), default = 'default', nullable=False)
+#    forRest = db.Column(db.Boolean, default=True, nullable=False)
+#    playlistUsers = db.relationship('UserPlaylist', backref='owner')
+#
+#    def __init__(self, name):
+#        self.playlistName = name
+
+
+#class UserPlayist(db.Model):
+#    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"), primary_key=True)
+#    playlist_id = db.Column(db.Integer, db.ForeignKey("playlist.playlistID"), primary_key=True)
+#    given_name = db.Column(db.String(20), default = 'default', nullable=False)
+#    
+#    def __init__(self, givenName):
+#        self.given_name = givenName
+
+
+class Video(db.Model):
+    videoID = db.Column(db.Integer, primary_key=True)
+    videoName = db.Column(db.String(20), default = 'default', nullable=False)
+    videoURL = db.Column(db.String(200), default = 'default', nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"))
+
+    def __init__(self, name, url):
+        self.videoName = name
+        self.videoURL = url
+
+
+#class UserVideo(db.Model):
+#    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"), primary_key=True)
+#    video_id = db.Column(db.Integer, db.ForeignKey("video.videoID"), primary_key=True)
+#    given_name = db.Column(db.String(20), default = 'default', nullable=False)
+#    
+#    def __init__(self, givenName):
+#        self.given_name = givenName
 
 
 # begin URL decorators
-@app.route("/")  # route page / home page
+@app.route("/", methods=["POST", "GET"])  # route page / home page
 def main_page():
+    if request.method == "POST":
+        #url = request.form["urlYoutube"]
+        vidName = request.form.get('vidName')
+        vidURL = request.form.get('vidURL')
+        newVid = Video(vidName, vidURL)
+        db.session.add(newVid)
+        db.session.commit()
+        
+        vid_ID = newVid.videoID
+        #vid_ID = Video.query.filter_by(url=videoURL).first()
+        return str(vid_ID)
     return render_template("main.html")
 
 
@@ -99,10 +146,12 @@ def login():
         # Check for matching saved username in db
         searchUser = User.query.filter_by(username=inputName).first()
         if searchUser:
+            # Save the user in the session
             session["user"] = inputName
 
-            # Check password for found user
-            if inputPass == searchUser.rawPass:
+
+            # Check that an unhashed password matches one that has previously been hashed
+            if bcrypt.checkpw(inputPass.encode('utf-8'), searchUser.hashedPass):
                 return redirect(url_for("user"))
             else:
                 flash("Incorrect password!")
@@ -157,7 +206,10 @@ def registration():
         if foundUser:
             flash("Username already taken!")
         else:
-            newUser = User(inputName, inputPass)
+            # Hash a password for the first time, with a randomly-generated salt
+            passHash = bcrypt.hashpw(inputPass.encode('utf-8'), bcrypt.gensalt())
+
+            newUser = User(inputName, passHash)
             db.session.add(newUser)
             db.session.commit()
             flash("Account created!")
@@ -165,10 +217,17 @@ def registration():
     return render_template("registration.html")
 
 
-@app.route("/admin")
+@app.route("/admin", methods=["POST", "GET"])
 def admin():
+    if request.method == "POST":
+        if request.form.get("delete_user"):
+            selectedUserID = request.form['delete_user']
+            userToDelete = User.query.filter_by(userID=selectedUserID).first()
+            db.session.delete(userToDelete)
+            db.session.commit()
+            flash(f"Deleted {userToDelete.username}")
     # if an admin:
-    return render_template("admin.html", values=User.query.all())
+    return render_template("admin.html", users=User.query.all(), videos=Video.query.all())
     # else:
     # return redirect(url_for("main_page"))
 
@@ -176,7 +235,7 @@ def admin():
 """ YOUTUBE endpoints """
 
 
-@app.route("/youtube")
+@app.route("/youtube", methods=["POST", "GET"])
 def youtube():
     return render_template("/sharedTemplates/youtube.html")
 
@@ -273,7 +332,30 @@ def get_playlist(id):
 # app.run(debug=True)       Commented out for testing db
 # # juuuust necessary
 if __name__ == '__main__':
-    # Creates db if not exists
+    # Refreshes and creates db
     db.drop_all()
     db.create_all()
+
+    # Add all admin accounts
+    usernames = ["Daniel", "Uri", "Josh", "Aiden", "Tea", "Yan"]
+    passwords = ["Harris", "Soltz", "Richardson", "Wick", "Wright", "Zhang"]
+    for i in range(len(usernames)):
+        passHash = bcrypt.hashpw(passwords[i].encode('utf-8'), bcrypt.gensalt())
+        newUser = User(usernames[i], passHash)
+        newUser.isAdmin = True
+        db.session.add(newUser)
+    db.session.commit()
+
+    # Adding videos to test table relations
+    #videoNames = ["The Best of Piano", "Elon Musk Interview"]
+    #videoURLs = ["https://www.youtube.com/watch?v=cGYyOY4XaFs", "https://www.youtube.com/watch?v=ESIjxVudERY"]
+    #videoUsers = ["Uri", "Tea"]
+    #for i in range(len(videoNames)):
+    #    forUser = User.query.filter_by(username=videoUsers[i]).first()
+    #    newVideo = Video(videoNames[i], videoURLs[i])
+    #    newVideo.user = forUser
+    #    db.session.add(newVideo)
+    #db.session.commit()
+
+
     app.run(debug=True, host="0.0.0.0", port=5500)

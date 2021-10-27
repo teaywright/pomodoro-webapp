@@ -16,8 +16,44 @@
         {% endif %}
     {% endwith %}
 
-    {% for item in values %}
-        <p>ID: {{item.userID}}, Name: {{item.username}}, Password: {{item.rawPass}}, Account Created Date: {{item.dateAdded}}</p>
-    {% endfor %}
+    <table>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Account Creation Date</th>
+          <th>Delete</th>
+        </tr>
+        {% for usr in users %}
+        <tr>
+          <td>{{ usr.userID }}</td>
+          <td>{{ usr.username }}</td>
+          <td>{{ usr.dateAdded }}</td>
+          <td>
+              <form method ="post" action="">
+                <button type="submit" name="delete_user" value={{ usr.userID }}>DELETE</button>
+              </form>
+            </td>
+        </tr>
+        {% endfor %}
+      </table>
+
+
+      <table>
+        <tr>
+          <th>Video ID</th>
+          <th>Video Name</th>
+          <th>URL</th>
+          <th>User ID</th>
+        </tr>
+        {% for vid in videos %}
+        <tr>
+          <td>{{ vid.videoID }}</td>
+          <td>{{ vid.videoName }}</td>
+          <td>{{ vid.videoURL }}</td>
+          <td>{{ vid.user_id }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+
 </body>
 </html>
