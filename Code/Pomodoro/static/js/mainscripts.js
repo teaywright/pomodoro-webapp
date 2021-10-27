@@ -80,6 +80,30 @@ function loadYoutube(){
     xhr.send();
 }
 
+
+// AJAX save YouTube video to database
+function storeVideo() {
+    var xhr = new XMLHttpRequest();
+    console.log("Clicked save");
+    var name = document.getElementById("Video Name").value;
+    var inputURL = document.getElementById("urlYoutube").value;
+
+    xhr.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            var videoItem = "<p>" + this.responseText + " " + inputURL + "</p>";
+            document.getElementById("savedVideos").innerHTML += videoItem;
+        }
+    }
+    console.log(name)
+    xhr.open("POST", "/", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("vidName=" + name + "&vidURL=" + inputURL);
+    //xhr.send("name=" + name + "inputURL=" + inputURL);
+}
+
+
+
+
 // 2. This code loads the IFrame Player API code asynchronously.
 var tag = document.createElement('script');
 
