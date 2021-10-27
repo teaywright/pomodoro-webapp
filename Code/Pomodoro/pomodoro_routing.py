@@ -347,15 +347,15 @@ if __name__ == '__main__':
     db.session.commit()
 
     # Adding videos to test table relations
-    #videoNames = ["The Best of Piano", "Elon Musk Interview"]
-    #videoURLs = ["https://www.youtube.com/watch?v=cGYyOY4XaFs", "https://www.youtube.com/watch?v=ESIjxVudERY"]
-    #videoUsers = ["Uri", "Tea"]
-    #for i in range(len(videoNames)):
-    #    forUser = User.query.filter_by(username=videoUsers[i]).first()
-    #    newVideo = Video(videoNames[i], videoURLs[i])
-    #    newVideo.user = forUser
-    #    db.session.add(newVideo)
-    #db.session.commit()
+    videoNames = ["The Best of Piano", "Elon Musk Interview"]
+    videoURLs = ["https://www.youtube.com/watch?v=cGYyOY4XaFs", "https://www.youtube.com/watch?v=ESIjxVudERY"]
+    videoUsers = ["Uri", "Tea"]
+    for i in range(len(videoNames)):
+        forUser = User.query.filter_by(username=videoUsers[i]).first()
+        newVideo = Video(videoNames[i], videoURLs[i])
+        newVideo.user = forUser
+        db.session.add(newVideo)
+    db.session.commit()
 
 
     app.run(debug=True, host="0.0.0.0", port=5500)

@@ -97,7 +97,7 @@ function storeVideo() {
     console.log(name)
     xhr.open("POST", "/", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send("vidName=" + name);
+    xhr.send("vidName=" + name + "&vidURL=" + inputURL);
     //xhr.send("name=" + name + "inputURL=" + inputURL);
 }
 
