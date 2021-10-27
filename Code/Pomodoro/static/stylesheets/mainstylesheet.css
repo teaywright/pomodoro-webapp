@@ -361,3 +361,25 @@ Begin work for modal
 .modal a.close-modal {
   display: none;
 }
+
+/*CSS for Spotify Login */
+.lefthand2{
+  position: absolute;
+  z-index: 1;
+  bottom: 0%;
+  left: 120px;
+  background-color: black;
+  height: 700px;
+  width: 200px;
+  border-radius: 150px 150px 0 0;
+}
+.righthand2{
+  position: absolute;
+  z-index: -1;
+  right: 120px;
+  top : 5%;
+  background-color: black;
+  height: 700px;
+  width: 200px;
+  border-radius: 0 0 150px 150px;
+}
