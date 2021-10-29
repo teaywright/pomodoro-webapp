@@ -75,7 +75,7 @@
             background-color: white;
             float: center;
             width: 24%;
-            height: 315px;
+            height: 325px;
             border-radius: 15px;
         }
     </style>
@@ -125,9 +125,10 @@
                     background-color: black; border-radius: 30px">Panda Clock</h1>
                 <form name="form1" action="" method="post" >
                     <input id= "Username" name="nm" type="text" size="50" style="height: 40px; margin-top: 10px;" placeholder="Username"><br><br>
-                    <input id="Password" name="pass" type="text" size="50" style="height: 40px" placeholder="Password"><br><br>
+                    <input id="Password" name="pass" type="password" size="50" style="height: 40px" placeholder="Password">
+                    <input id="check" type="checkbox" onclick="showPassword()"><p2 id="p2">Show Password</p2><br><br>
                     <input id = "button" type="submit" value="Login" style="width: 410px;height: 40px;color: white;
-                    background-color: black"><br><br>
+                    background-color: black; margin-top: 20px;"><br><br>
                     <a>Don't Have an Account?</a>
                     <a href="/registration" style="text-decoration: none">Create One</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </form>
@@ -137,7 +138,7 @@
         <div class="lefthand"></div>
         
     </div>
-
-
-</body>  
+</body> 
+<!-- import all our scripts -->
+{% include './sharedTemplates/scriptLog.html' %} 
 </html>

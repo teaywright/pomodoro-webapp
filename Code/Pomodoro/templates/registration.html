@@ -105,9 +105,10 @@
             <form name="form1" action="" method="post" >
                 <input id= "Username" name="createName" type="text" size="50" style="height: 40px;margin-top: 10px" placeholder="Username"><br><br>
 
-                <input id="Password" name="createPass" type="text" size="50" style="height: 40px" placeholder="Password"><br><br>
-
-                <input id="RetryPassword" name="verifyPass" type="text" size="50" style="height: 40px" placeholder="Re-type Password"><br><br>
+                <input id="Password" name="Password" type="password" size="50" style="height: 40px" placeholder="Password">
+                <input id="check" type="checkbox" onclick="showPassword()"><p2 id="p2">Show Password</p2><br><br>
+                <div style="margin-top: 15px;"></div>
+                <input id="RetryPassword" name="verifyPass" type="password" size="50" style="height: 40px" placeholder="Re-type Password" ><br><br>
 
                 <input id = "button" type="submit" value="Create Account" style="width: 410px;height: 40px;color: white;
                 background-color: black"><br><br>
@@ -120,4 +121,6 @@
     <div class = "lefthand"></div>
     <div class = "righthand"></div>
 </body>  
+<!-- import all our scripts -->
+{% include './sharedTemplates/scriptLog.html' %}
 </html>

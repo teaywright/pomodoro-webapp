@@ -156,3 +156,17 @@ function changeYoutube(){
     player.loadVideoById(input);
     document.getElementById("urlYoutube").value = "";
 }
+/*
+Start JS for login and registration
+*/
+function showPassword() {
+    var x = document.getElementById("Password");
+    console.log("showpassword");
+    if (x.type === "password") {
+      x.type = "text";
+    } else 
+    {
+      x.type = "password";
+      
+    }
+  }

@@ -28,3 +28,11 @@
     filter: blur(5px);
 
   }
+#check{
+    float: left;
+    margin-top: 6px;
+}
+#p2{
+    float: left;
+    margin-left: 6px;
+}

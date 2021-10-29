@@ -253,6 +253,7 @@ def spotify():
 @app.route("/spotify-auth/<code>")
 def spotify_auth():
     print("spot auth enter....")
+    sp_scope = 'playlist-read-private'
     auth_manager = sp.oauth2.SpotifyOAuth(scope=sp_scope, show_dialog=True)
     token = {}
     if request.args.get("code"):
@@ -264,7 +265,7 @@ def spotify_auth():
         # Step 2. Display sign in link when no token
         auth_url = auth_manager.get_authorize_url()
         return render_template('spotify_login.html', auth_url=auth_url)
-
+    
     # getplaylists
     spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
     playlists = spfy.current_user_playlists()
