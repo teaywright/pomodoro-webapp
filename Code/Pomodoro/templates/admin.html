@@ -46,16 +46,26 @@
       <table>
         <tr>
           <th>Video ID</th>
-          <th>Video Name</th>
           <th>URL</th>
-          <th>User ID</th>
         </tr>
         {% for vid in videos %}
         <tr>
           <td>{{ vid.videoID }}</td>
-          <td>{{ vid.videoName }}</td>
           <td>{{ vid.videoURL }}</td>
-          <td>{{ vid.user_id }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <table>
+        <tr>
+          <th>User ID</th>
+          <th>Video ID</th>
+          <th>Video Name</th>
+        </tr>
+        {% for usrVid in userVideos %}
+        <tr>
+          <td>{{ usrVid.user_id }}</td>
+          <td>{{ usrVid.video_id }}</td>
+          <td>{{ usrVid.given_name }}</td>
         </tr>
         {% endfor %}
       </table>

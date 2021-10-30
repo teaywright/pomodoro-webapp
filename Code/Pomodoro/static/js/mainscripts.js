@@ -81,24 +81,33 @@ function loadYoutube(){
 }
 
 
-// AJAX save YouTube video to database
+// AJAX save YouTube video and update videos list
 function storeVideo() {
-    var xhr = new XMLHttpRequest();
     console.log("Clicked save");
-    var name = document.getElementById("Video Name").value;
     var inputURL = document.getElementById("urlYoutube").value;
+    var YTVideoID = YouTubeGetID(inputURL);
 
+    if (YTVideoID == inputURL) {
+        alert("Invalid url");
+        return;
+    }
+    
+    var name = document.getElementById("Video Name").value;
+    var videosTable = document.getElementById("savedVideos");
+
+    var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            var videoItem = "<p>" + this.responseText + " " + inputURL + "</p>";
-            document.getElementById("savedVideos").innerHTML += videoItem;
+            videosTable.innerHTML +=    `<tr id=${YTVideoID}>
+                                            <td>` + xhr.responseText + `</td>
+                                            <td onClick='player.loadVideoById(${YTVideoID});'>${name}</td>
+                                        </tr>`;
         }
     }
-    console.log(name)
-    xhr.open("POST", "/", true);
+
+    xhr.open("POST", "/youtube/save_video", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send("vidName=" + name + "&vidURL=" + inputURL);
-    //xhr.send("name=" + name + "inputURL=" + inputURL);
 }
 
 

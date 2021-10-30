@@ -6,7 +6,17 @@
     <button onclick=changeYoutube()>Play Video:</button>
     <button onclick=returnMain()>Go back:</button>
     <button onclick=storeVideo()>saveVideo:</button>
-    <div class='videoStored', id="savedVideos">
+    <div class='videoStored'>
+      <table>
+        <tbody id="savedVideos">
+          {% for vid in usrVideos %}
+          <tr id={{ vid.video_id }}>
+            <td>{{ vid.video_id }}</td>
+            <td>{{ vid.given_name }}</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+      </table>
     </div>
 </div>
 

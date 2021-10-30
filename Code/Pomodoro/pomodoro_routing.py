@@ -9,6 +9,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import bcrypt
+import json
 # imports used for/with spotify api
 import os
 from flask import Flask, session, request, redirect, render_template
@@ -45,7 +46,7 @@ def session_cache_path():
 # Secret key is needed for encryption with post methods
 app.secret_key = "secretKey"
 
-# How long someone stays logged in
+# How long someone stays logged in, starting when they log in
 app.permanent_session_lifetime = timedelta(minutes=5)
 
 # Set location of database as a configuration
@@ -62,12 +63,31 @@ class User(db.Model):
     hashedPass = db.Column(db.String(50), nullable=False)
     dateAdded = db.Column(db.Date, default=datetime.utcnow)
     isAdmin = db.Column(db.Boolean, default=False, nullable=False)
-    videos = db.relationship('Video', backref='user')
+    userVideos = db.relationship('UserVideo', backref='user')
 
     def __init__(self, username, password):
         self.username = username
         self.hashedPass = password
 
+
+class Video(db.Model):
+    videoID = db.Column(db.Integer, primary_key=True)
+    #videoName = db.Column(db.String(20), default = 'default', nullable=False)
+    videoURL = db.Column(db.String(200), default = 'default', nullable=False)
+    # user_id = db.Column(db.Integer, db.ForeignKey("user.userID"))
+    userVideos = db.relationship('UserVideo', backref='video')
+
+    def __init__(self, url):
+        self.videoURL = url
+
+
+class UserVideo(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"), primary_key=True)
+    video_id = db.Column(db.Integer, db.ForeignKey("video.videoID"), primary_key=True)
+    given_name = db.Column(db.String(20), default = 'default', nullable=False)
+
+    def __init__(self, name):
+        self.given_name = name
 
 #class Playlist(db.Model):
 #    playlistID = db.Column(db.Integer, primary_key=True)
@@ -88,40 +108,21 @@ class User(db.Model):
 #        self.given_name = givenName
 
 
-class Video(db.Model):
-    videoID = db.Column(db.Integer, primary_key=True)
-    videoName = db.Column(db.String(20), default = 'default', nullable=False)
-    videoURL = db.Column(db.String(200), default = 'default', nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"))
-
-    def __init__(self, name, url):
-        self.videoName = name
-        self.videoURL = url
-
-
-#class UserVideo(db.Model):
-#    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"), primary_key=True)
-#    video_id = db.Column(db.Integer, db.ForeignKey("video.videoID"), primary_key=True)
-#    given_name = db.Column(db.String(20), default = 'default', nullable=False)
-#    
-#    def __init__(self, givenName):
-#        self.given_name = givenName
 
 
 # begin URL decorators
 @app.route("/", methods=["POST", "GET"])  # route page / home page
 def main_page():
     if request.method == "POST":
-        #url = request.form["urlYoutube"]
+        #currUser = session["user"]
         vidName = request.form.get('vidName')
         vidURL = request.form.get('vidURL')
-        newVid = Video(vidName, vidURL)
-        db.session.add(newVid)
-        db.session.commit()
-        
-        vid_ID = newVid.videoID
+
+        vid_ID = addVideo(vidName, vidURL, "Guest")
+
         #vid_ID = Video.query.filter_by(url=videoURL).first()
         return str(vid_ID)
+    session["user"] = "Guest"
     return render_template("main.html")
 
 
@@ -227,7 +228,7 @@ def admin():
             db.session.commit()
             flash(f"Deleted {userToDelete.username}")
     # if an admin:
-    return render_template("admin.html", users=User.query.all(), videos=Video.query.all())
+    return render_template("admin.html", users=User.query.all(), videos=Video.query.all(), userVideos=UserVideo.query.all())
     # else:
     # return redirect(url_for("main_page"))
 
@@ -237,7 +238,24 @@ def admin():
 
 @app.route("/youtube", methods=["POST", "GET"])
 def youtube():
-    return render_template("/sharedTemplates/youtube.html")
+    currUserVids = UserVideo.query.all()
+    return render_template("/sharedTemplates/youtube.html", usrVideos = currUserVids)
+
+
+@app.route("/youtube/save_video", methods=["POST", "GET"])
+def save_video():
+    if request.method == "POST":
+        print(request.form)
+        print(session["user"])
+        print(request.form.get('vidName'))
+
+        vidName = request.form.get('vidName')
+        vidURL = request.form.get('vidURL')
+        forUser = session["user"]
+
+        usrVidID = addVideo(vidName, vidURL, forUser)
+        
+        return str(usrVidID)
 
 
 @app.route("/spotify")
@@ -330,6 +348,37 @@ def get_playlist(id):
                            message=None)
 
 
+def addAdmins(usernames, passwords):
+    for i in range(len(adminUsernames)):
+        passHash = bcrypt.hashpw(passwords[i].encode('utf-8'), bcrypt.gensalt())
+        newUser = User(usernames[i], passHash)
+        newUser.isAdmin = True
+        db.session.add(newUser)
+    db.session.commit()
+
+    
+
+# Adds video and a UserVideo linked to a user and video
+def addVideo(name, url, forUsername):
+
+    # Save video to database
+    forUser = User.query.filter_by(username=forUsername).first()
+    newVideo = Video(url)
+    db.session.add(newVideo)
+    db.session.commit()
+
+    forVideo = Video.query.filter_by(videoID=newVideo.videoID).first()
+
+    newUserVideo = UserVideo(name)
+    newUserVideo.user = forUser
+    newUserVideo.video = forVideo
+
+    db.session.add(newUserVideo)
+    db.session.commit()
+
+    return forVideo.videoID
+
+
 # app.run(debug=True)       Commented out for testing db
 # # juuuust necessary
 if __name__ == '__main__':
@@ -338,25 +387,16 @@ if __name__ == '__main__':
     db.create_all()
 
     # Add all admin accounts
-    usernames = ["Daniel", "Uri", "Josh", "Aiden", "Tea", "Yan"]
-    passwords = ["Harris", "Soltz", "Richardson", "Wick", "Wright", "Zhang"]
-    for i in range(len(usernames)):
-        passHash = bcrypt.hashpw(passwords[i].encode('utf-8'), bcrypt.gensalt())
-        newUser = User(usernames[i], passHash)
-        newUser.isAdmin = True
-        db.session.add(newUser)
-    db.session.commit()
+    adminUsernames = ["Guest", "Daniel", "Uri", "Josh", "Aiden", "Tea", "Yan"]
+    adminPasswords = ["Guest", "Harris", "Soltz", "Richardson", "Wick", "Wright", "Zhang"]
+    addAdmins(adminUsernames, adminPasswords)
 
     # Adding videos to test table relations
     videoNames = ["The Best of Piano", "Elon Musk Interview"]
     videoURLs = ["https://www.youtube.com/watch?v=cGYyOY4XaFs", "https://www.youtube.com/watch?v=ESIjxVudERY"]
     videoUsers = ["Uri", "Tea"]
-    for i in range(len(videoNames)):
-        forUser = User.query.filter_by(username=videoUsers[i]).first()
-        newVideo = Video(videoNames[i], videoURLs[i])
-        newVideo.user = forUser
-        db.session.add(newVideo)
-    db.session.commit()
 
+    for i in range(len(videoNames)):
+        addVideo(videoNames[i], videoURLs[i], videoUsers[i])
 
     app.run(debug=True, host="0.0.0.0", port=5500)
