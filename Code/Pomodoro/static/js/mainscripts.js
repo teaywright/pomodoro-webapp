@@ -100,7 +100,7 @@ function storeVideo() {
         if (this.readyState == 4 && this.status == 200) {
             videosTable.innerHTML +=    `<tr id=${YTVideoID}>
                                             <td>` + xhr.responseText + `</td>
-                                            <td onClick='player.loadVideoById(${YTVideoID});'>${name}</td>
+                                            <td onclick='player.loadVideoById(${String(YTVideoID)});'>${name}</td>
                                         </tr>`;
         }
     }
