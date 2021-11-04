@@ -100,15 +100,20 @@ function storeVideo() {
         if (this.readyState == 4 && this.status == 200) {
             videosTable.innerHTML +=    `<tr id=${YTVideoID}>
                                             <td>` + xhr.responseText + `</td>
-                                            <td onclick='player.loadVideoById(${String(YTVideoID)});'>${name}</td>
+                                            <td class='youtube_name'>${name}</td>
                                         </tr>`;
         }
     }
-
+    
     xhr.open("POST", "/youtube/save_video", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send("vidName=" + name + "&vidURL=" + inputURL);
 }
+// Click on ID savedVideos to play video after AJAX call
+// Where comign from).on(event, )
+$(document).on('click', `.videoStored`, function() {
+    player.loadVideoById(YTVideoID);
+});
 
 
 
@@ -165,6 +170,8 @@ function changeYoutube(){
     player.loadVideoById(input);
     document.getElementById("urlYoutube").value = "";
 }
+
+
 /*
 Start JS for login and registration
 */

@@ -13,7 +13,7 @@ import json
 # imports used for/with spotify api
 import os
 from flask import Flask, session, request, redirect, render_template
-from flask_session import Session
+from flask_session import  Session
 import spotipy as sp
 import uuid
 from spotipy.oauth2 import SpotifyOAuth
@@ -27,7 +27,7 @@ sp_scope = 'playlist-read-private'
 # __name__ is just a built in flask variable to be similar to a "Main" function
 app = Flask(__name__)
 
-# more spotify
+# more spotifyhttps://widget.rave.office.net/chat?partner=GetHelp&requestid=261e4528-1d91-4aaa-bc41-6fa796c1ac81
 # app.config['SECRET_KEY'] = os.urandom(64)
 # app.config['SESSION_TYPE'] = 'filesystem'
 # app.config['SESSION_FILE_DIR'] = './.flask_session/'
@@ -57,6 +57,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Each table in the database is a class
+
+
 class User(db.Model):
     userID = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
@@ -73,7 +75,7 @@ class User(db.Model):
 class Video(db.Model):
     videoID = db.Column(db.Integer, primary_key=True)
     #videoName = db.Column(db.String(20), default = 'default', nullable=False)
-    videoURL = db.Column(db.String(200), default = 'default', nullable=False)
+    videoURL = db.Column(db.String(200), default='default', nullable=False)
     # user_id = db.Column(db.Integer, db.ForeignKey("user.userID"))
     userVideos = db.relationship('UserVideo', backref='video')
 
@@ -82,14 +84,16 @@ class Video(db.Model):
 
 
 class UserVideo(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"), primary_key=True)
-    video_id = db.Column(db.Integer, db.ForeignKey("video.videoID"), primary_key=True)
-    given_name = db.Column(db.String(20), default = 'default', nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        "user.userID"), primary_key=True)
+    video_id = db.Column(db.Integer, db.ForeignKey(
+        "video.videoID"), primary_key=True)
+    given_name = db.Column(db.String(20), default='default', nullable=False)
 
     def __init__(self, name):
         self.given_name = name
 
-#class Playlist(db.Model):
+# class Playlist(db.Model):
 #    playlistID = db.Column(db.Integer, primary_key=True)
 #    playlistName = db.Column(db.String(20), default = 'default', nullable=False)
 #    forRest = db.Column(db.Boolean, default=True, nullable=False)
@@ -99,15 +103,13 @@ class UserVideo(db.Model):
 #        self.playlistName = name
 
 
-#class UserPlayist(db.Model):
+# class UserPlayist(db.Model):
 #    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"), primary_key=True)
 #    playlist_id = db.Column(db.Integer, db.ForeignKey("playlist.playlistID"), primary_key=True)
 #    given_name = db.Column(db.String(20), default = 'default', nullable=False)
-#    
+#
 #    def __init__(self, givenName):
 #        self.given_name = givenName
-
-
 
 
 # begin URL decorators
@@ -149,7 +151,6 @@ def login():
         if searchUser:
             # Save the user in the session
             session["user"] = inputName
-
 
             # Check that an unhashed password matches one that has previously been hashed
             if bcrypt.checkpw(inputPass.encode('utf-8'), searchUser.hashedPass):
@@ -208,7 +209,8 @@ def registration():
             flash("Username already taken!")
         else:
             # Hash a password for the first time, with a randomly-generated salt
-            passHash = bcrypt.hashpw(inputPass.encode('utf-8'), bcrypt.gensalt())
+            passHash = bcrypt.hashpw(
+                inputPass.encode('utf-8'), bcrypt.gensalt())
 
             newUser = User(inputName, passHash)
             db.session.add(newUser)
@@ -239,7 +241,7 @@ def admin():
 @app.route("/youtube", methods=["POST", "GET"])
 def youtube():
     currUserVids = UserVideo.query.all()
-    return render_template("/sharedTemplates/youtube.html", usrVideos = currUserVids)
+    return render_template("/sharedTemplates/youtube.html", usrVideos=currUserVids)
 
 
 @app.route("/youtube/save_video", methods=["POST", "GET"])
@@ -254,7 +256,7 @@ def save_video():
         forUser = session["user"]
 
         usrVidID = addVideo(vidName, vidURL, forUser)
-        
+
         return str(usrVidID)
 
 
@@ -283,7 +285,7 @@ def spotify_auth():
         # Step 2. Display sign in link when no token
         auth_url = auth_manager.get_authorize_url()
         return render_template('spotify_login.html', auth_url=auth_url)
-    
+
     # getplaylists
     spfy = sp.Spotify(auth_manager=SpotifyOAuth(scope=sp_scope))
     playlists = spfy.current_user_playlists()
@@ -350,13 +352,13 @@ def get_playlist(id):
 
 def addAdmins(usernames, passwords):
     for i in range(len(adminUsernames)):
-        passHash = bcrypt.hashpw(passwords[i].encode('utf-8'), bcrypt.gensalt())
+        passHash = bcrypt.hashpw(
+            passwords[i].encode('utf-8'), bcrypt.gensalt())
         newUser = User(usernames[i], passHash)
         newUser.isAdmin = True
         db.session.add(newUser)
     db.session.commit()
 
-    
 
 # Adds video and a UserVideo linked to a user and video
 def addVideo(name, url, forUsername):
@@ -378,22 +380,29 @@ def addVideo(name, url, forUsername):
 
     return forVideo.videoID
 
-
+def test():
+    print("test")
 # app.run(debug=True)       Commented out for testing db
 # # juuuust necessary
+
+
 if __name__ == '__main__':
     # Refreshes and creates db
     db.drop_all()
     db.create_all()
 
+
+
     # Add all admin accounts
     adminUsernames = ["Guest", "Daniel", "Uri", "Josh", "Aiden", "Tea", "Yan"]
-    adminPasswords = ["Guest", "Harris", "Soltz", "Richardson", "Wick", "Wright", "Zhang"]
+    adminPasswords = ["Guest", "Harris", "Soltz",
+                      "Richardson", "Wick", "Wright", "Zhang"]
     addAdmins(adminUsernames, adminPasswords)
 
     # Adding videos to test table relations
     videoNames = ["The Best of Piano", "Elon Musk Interview"]
-    videoURLs = ["https://www.youtube.com/watch?v=cGYyOY4XaFs", "https://www.youtube.com/watch?v=ESIjxVudERY"]
+    videoURLs = ["https://www.youtube.com/watch?v=cGYyOY4XaFs",
+                 "https://www.youtube.com/watch?v=ESIjxVudERY"]
     videoUsers = ["Uri", "Tea"]
 
     for i in range(len(videoNames)):
