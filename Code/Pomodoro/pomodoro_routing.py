@@ -221,12 +221,32 @@ def registration():
 @app.route("/admin", methods=["POST", "GET"])
 def admin():
     if request.method == "POST":
+        # Deleting a user
         if request.form.get("delete_user"):
             selectedUserID = request.form['delete_user']
             userToDelete = User.query.filter_by(userID=selectedUserID).first()
+
+            # Delete associated UserVideo records
+            userVidsToDelete = UserVideo.query.filter_by(user_id=userToDelete.userID).all()
+            for usrVid in userVidsToDelete:
+                # Get video associated with UserVideo
+                associatedVid = Video.query.filter_by(videoID=usrVid.video_id).first()
+
+                # Delete UserVideo
+                db.session.delete(usrVid)
+                db.session.commit()
+
+                # Delete video if no longer associated with any UserVideo
+                relatedUsrVid = UserVideo.query.filter_by(video_id=associatedVid.videoID).first()
+                if (not relatedUsrVid):
+                    db.session.delete(associatedVid)
+                    db.session.commit()
+
+            # Delete user
             db.session.delete(userToDelete)
             db.session.commit()
             flash(f"Deleted {userToDelete.username}")
+            
     # if an admin:
     return render_template("admin.html", users=User.query.all(), videos=Video.query.all(), userVideos=UserVideo.query.all())
     # else:
@@ -372,16 +392,14 @@ def addVideo(name, YT_ID, forUsername):
     db.session.add(newVideo)
     db.session.commit()
 
+    # Create UserVideo association database entry
     forVideo = Video.query.filter_by(videoID=newVideo.videoID).first()
-
     newUserVideo = UserVideo(name)
     newUserVideo.user = forUser
     newUserVideo.video = forVideo
-
     db.session.add(newUserVideo)
     db.session.commit()
 
-    return forVideo.videoID
 
 def test():
     print("test")
