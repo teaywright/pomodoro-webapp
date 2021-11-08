@@ -10,8 +10,8 @@
       <table>
         <tbody id="savedVideos">
           {% for vid in usrVideos %}
-          <tr id={{ vid.video_id }}>
-            <td>{{ vid.video_id }}</td>
+          <tr id={{ YT_IDs[loop.index - 1] }}>
+            <td>{{ loop.index }}</td>
             <td>{{ vid.given_name }}</td>
           </tr>
           {% endfor %}

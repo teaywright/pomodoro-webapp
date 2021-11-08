@@ -74,13 +74,11 @@ class User(db.Model):
 
 class Video(db.Model):
     videoID = db.Column(db.Integer, primary_key=True)
-    #videoName = db.Column(db.String(20), default = 'default', nullable=False)
-    videoURL = db.Column(db.String(200), default='default', nullable=False)
-    # user_id = db.Column(db.Integer, db.ForeignKey("user.userID"))
+    youtubeID = db.Column(db.String(50), unique=True, nullable=False)
     userVideos = db.relationship('UserVideo', backref='video')
 
-    def __init__(self, url):
-        self.videoURL = url
+    def __init__(self, YT_ID):
+        self.youtubeID = YT_ID
 
 
 class UserVideo(db.Model):
@@ -241,7 +239,12 @@ def admin():
 @app.route("/youtube", methods=["POST", "GET"])
 def youtube():
     currUserVids = UserVideo.query.all()
-    return render_template("/sharedTemplates/youtube.html", usrVideos=currUserVids)
+    currYoutubeIDs = []
+    for usrVid in currUserVids:
+        matchedVid = Video.query.filter_by(videoID=usrVid.video_id).first()
+        currYoutubeIDs.append(matchedVid.youtubeID)
+
+    return render_template("/sharedTemplates/youtube.html", usrVideos=currUserVids, YT_IDs=currYoutubeIDs)
 
 
 @app.route("/youtube/save_video", methods=["POST", "GET"])
@@ -361,11 +364,11 @@ def addAdmins(usernames, passwords):
 
 
 # Adds video and a UserVideo linked to a user and video
-def addVideo(name, url, forUsername):
+def addVideo(name, YT_ID, forUsername):
 
     # Save video to database
     forUser = User.query.filter_by(username=forUsername).first()
-    newVideo = Video(url)
+    newVideo = Video(YT_ID)
     db.session.add(newVideo)
     db.session.commit()
 
@@ -401,11 +404,10 @@ if __name__ == '__main__':
 
     # Adding videos to test table relations
     videoNames = ["The Best of Piano", "Elon Musk Interview"]
-    videoURLs = ["https://www.youtube.com/watch?v=cGYyOY4XaFs",
-                 "https://www.youtube.com/watch?v=ESIjxVudERY"]
+    youtubeIDs = ["cGYyOY4XaFs", "ESIjxVudERY"]
     videoUsers = ["Uri", "Tea"]
 
     for i in range(len(videoNames)):
-        addVideo(videoNames[i], videoURLs[i], videoUsers[i])
+        addVideo(videoNames[i], youtubeIDs[i], videoUsers[i])
 
     app.run(debug=True, host="0.0.0.0", port=5500)
