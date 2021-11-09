@@ -32,14 +32,20 @@
            <button id="chillButton" class="workbutton" onclick="switchSides()">Work Button Grow</button>
 
            <div id="ex1" class="modal">
-                <div class="modal-header">
-                    <h4 class="modal-title">CHOOSE YOUR BACKGROUND</h4>
-                </div>
-                <button onclick = "changeP1()">LOGO</button>
-                <button onclick = "changeP2()">bamboo</button>
+            <div class="modal-header" style="justify-content: center;">
+                <h4 class="modal-title">CHOOSE YOUR BACKGROUND</h4>
             </div>
+            <div class="modal-body">
+                <div align="center"><button class="bg_buttton" onclick = "changeP1()">LOGO</button></div>
+                <div align="center"><button class="bg_buttton" onclick = "changeP2()">Bamboo</button></div>
+                <div align="center"><button class="bg_buttton" onclick = "changeP3()">Picture1</button></div>
+                <div align="center"><button class="bg_buttton" onclick = "changeP4()">Picture2</button></div>
+                <div align="center"><button class="bg_buttton" onclick = "changeP5()">Picture3</button></div>
+                <div align="center"><button class="bg_buttton" onclick = "changeP6()">Picture4</button></div>
+            </div>
+        </div>
 
-            <button><a href="#ex1" rel="modal:open">Customization</a></button>
+        <a href="#ex1" rel="modal:open"><button>Customization</button></a>
        </div>
        <div class="split chill" id="chillSide">
            {% include './sharedTemplates/clock.html' %}

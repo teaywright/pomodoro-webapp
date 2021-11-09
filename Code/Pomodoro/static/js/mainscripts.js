@@ -32,6 +32,18 @@ function changeP1(){
 function changeP2(){
     document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/bamboo.jpg)";
 }
+function changeP3(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}
+function changeP4(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}
+function changeP5(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}  
+function changeP6(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}  
 
 // 
 //  Begin JS for Media Player
