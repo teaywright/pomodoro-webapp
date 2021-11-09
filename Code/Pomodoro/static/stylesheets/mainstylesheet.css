@@ -267,6 +267,7 @@ BEGIN CSS FOR SPOTIFY DROPDOWN MENU
 */
 .playlist-choice{
   border-radius: 30px;
+  border: 5px solid #04AA6D;
 }
 
 /* 
