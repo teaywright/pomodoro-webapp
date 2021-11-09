@@ -281,7 +281,10 @@ def save_video():
         usrVidID = addVideo(vidName, vidURL, forUser)
 
         return str(usrVidID)
-
+#removes cache
+@app.route("/cache-remove")
+def removeCache():
+    os.remove(".cache")
 
 @app.route("/spotify")
 def spotify():
@@ -295,6 +298,7 @@ def spotify():
 # for when spotify auth returns authorization code
 @app.route("/spotify-auth/<code>")
 def spotify_auth():
+    
     print("spot auth enter....")
     sp_scope = 'playlist-read-private'
     auth_manager = sp.oauth2.SpotifyOAuth(scope=sp_scope, show_dialog=True)
@@ -306,6 +310,7 @@ def spotify_auth():
 
     if not auth_manager.validate_token(token):
         # Step 2. Display sign in link when no token
+        
         auth_url = auth_manager.get_authorize_url()
         return render_template('spotify_login.html', auth_url=auth_url)
 

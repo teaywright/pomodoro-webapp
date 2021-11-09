@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="../static/stylesheets/navbar.css">
     <title>Spotify Login</title>
 </head>
-<body>
+<body onload="removeCache()">
     <div style="width: 100%;">
         {% include './sharedTemplates/navbar.html' %}
     </div>
@@ -22,6 +22,12 @@
 </body>
 
 <script>
+    function removeCache()
+    {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/cache-remove');
+        xhr.send();
+    }
     function spotify_authorize(auth_url) {
         location.replace(auth_url);
     }
