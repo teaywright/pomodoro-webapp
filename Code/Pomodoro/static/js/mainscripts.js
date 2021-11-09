@@ -6,6 +6,7 @@ const mainBackground = document.getElementById("mainBackground");
 const leftBlocker = document.getElementsByClassName("leftBlocker");
 const rightBlocker = document.getElementsByClassName("rightBlocker");
 const sideSwapSound = new Audio('static/sound/service-bell_daniel_simion.mp3');
+sideSwapSound.volume = .25;
 //Detect which side is dominant.  1 = working side dominant
 let detectSide = 1;
 function switchSides(){
