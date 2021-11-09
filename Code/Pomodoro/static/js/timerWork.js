@@ -11,12 +11,21 @@ var isPaused = new Boolean(false);
 
 
 function onClick2(goodTime){
-    //console.log("does this repeat");
-    //countTime = document.getElementById("totTime").value;
+    console.log("Work time starting");
 
     if(goodTime == undefined){
-        minutes = parseInt(document.getElementById("minutes").value);
-        seconds = parseInt(document.getElementById("seconds").value);
+        var minBox = document.getElementById("minutes").value;
+        var secBox = document.getElementById("seconds").value;
+        if(minBox === ''){
+            minutes = 0;
+        } else {
+            minutes = parseInt(document.getElementById("minutes").value);  
+        }
+        if(secBox === ''){
+            seconds = 0; 
+        } else {
+            seconds = parseInt(document.getElementById("seconds").value);
+        }
         loadTimes(minutes, seconds);
         minutes = minutes*60;
         countTime = minutes + seconds;
@@ -24,6 +33,7 @@ function onClick2(goodTime){
     } else {
         countTime = goodTime;
     }
+    console.log("Total Count time: " +countTime);
     // Update the count down every 1 second
     var x = setInterval(function() {
         console.log("Work" +countTime);
@@ -40,9 +50,12 @@ function onClick2(goodTime){
         }
         
         if (distance <= 0) {
+            console.log("Timer done work side, switching...");
             clearInterval(x);
             document.getElementById("countdown").innerHTML = "TIME DONE!";
+            onClickChill();
             switchSides();
+            
         } 
     }, 1000);
 }

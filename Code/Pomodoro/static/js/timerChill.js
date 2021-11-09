@@ -14,18 +14,22 @@ function loadTimes(min, sec){
     //console.log("called");
     //console.log("before" +min+ "m " +sec+ "s");
     min = 60 - min;
-    sec = 60 - sec;
+    //sec = 60 - sec;
+    if(sec == 0){
+        sec = 0;
+    } else {
+        sec = 60 - sec;
+        min = min - 1;
+    }
     //console.log("after" +min+ "m " +sec+ "s");
     document.getElementById("countdownChill").innerHTML = "Time left: " +min+ "m " +sec+ "s";
     min= min*60;
     countTimeChill = min + sec;
-
-
 }
 
+
 function onClickChill(goodTimeChill){
-    //console.log("does this repeat");
-    //countTime = document.getElementById("totTime").value;
+    console.log("Chill Timer Start");
 
     if(goodTimeChill == undefined){
         startTimeChill = countTimeChill;
@@ -51,6 +55,7 @@ function onClickChill(goodTimeChill){
             clearInterval(y);
             document.getElementById("countdownChill").innerHTML = "TIME DONE!";
             switchSides();
+            onClick2();
         } 
     }, 1000);
 }
