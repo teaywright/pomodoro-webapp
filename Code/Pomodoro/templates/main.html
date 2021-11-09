@@ -23,12 +23,16 @@
    <div id="mainContainer" class="picture animateGrowWork">
    <!-- Split into 2:   one for work and one for chill -->
        <div class="split work" id= "workSide">
-           {% include './sharedTemplates/clock.html' %}        
+           {% include './sharedTemplates/clockWork.html' %}        
            {% include './sharedTemplates/mediaPlayer.html' %}
            <!--
              <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawWork'>
            -->
-           <div class = "lefthand"></div>
+           <div class = "lefthand blocker-black-to-white" id="lefthand">
+               <div class="blocker-h2-container lefthand-h2">
+                   <h2>Get to work!  Time's ticking.</h2>
+               </div>
+           </div>
            <button id="chillButton" class="workbutton" onclick="switchSides()">Work Button Grow</button>
 
            <div id="ex1" class="modal">
@@ -42,12 +46,16 @@
             <button><a href="#ex1" rel="modal:open">Customization</a></button>
        </div>
        <div class="split chill" id="chillSide">
-           {% include './sharedTemplates/clock.html' %}
+           {% include './sharedTemplates/clockChill.html' %}
            {% include './sharedTemplates/mediaPlayer.html' %}
            <!-- 
             <img src='../static/pictures/sideBlocker.png' alt="paw" class='pawChill'>
            -->
-           <div class = "righthand"></div>
+           <div class = "righthand blocker-white-to-black" id="righthand">
+                <div class="blocker-h2-container righthand-h2">
+                    <h2>Time to relax! Take a break</h2>
+                </div>
+           </div>
            <button id="chillButton" class="chillbutton" onclick="switchSides()">Chill Button Grow</button>
        </div>
        

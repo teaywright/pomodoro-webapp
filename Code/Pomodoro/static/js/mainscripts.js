@@ -3,6 +3,8 @@ const work = document.getElementById("workSide");
 const chill = document.querySelector("chillSide");
 const mainContainer = document.getElementById("mainContainer");
 const mainBackground = document.getElementById("mainBackground");
+const leftBlocker = document.getElementsByClassName("leftBlocker");
+const rightBlocker = document.getElementsByClassName("rightBlocker");
 const sideSwapSound = new Audio('static/sound/service-bell_daniel_simion.mp3');
 //Detect which side is dominant.  1 = working side dominant
 let detectSide = 1;
@@ -12,6 +14,10 @@ function switchSides(){
         mainContainer.classList.add("animateShrinkWork");
         mainBackground.classList.remove("animateGrowWorkBg");
         mainBackground.classList.add("animateShrinkWorkBg");
+        $("#lefthand").removeClass("blocker-black-to-white");
+        $("#lefthand").addClass("blocker-white-to-black");
+        $("#righthand").removeClass("blocker-white-to-black");
+        $("#righthand").addClass("blocker-black-to-white");
         sideSwapSound.play();        
         detectSide = 0;
         player.pauseVideo();
@@ -20,6 +26,11 @@ function switchSides(){
         mainContainer.classList.remove("animateShrinkWork");
         mainBackground.classList.add("animateGrowWorkBg");
         mainBackground.classList.remove("animateShrinkWorkBg");
+        $("#lefthand").removeClass("blocker-white-to-black");
+        $("#lefthand").addClass("blocker-black-to-white");
+        $("#righthand").removeClass("blocker-black-to-white");
+        $("#righthand").addClass("blocker-white-to-black");
+        
         sideSwapSound.play();
         detectSide = 1;
     }
