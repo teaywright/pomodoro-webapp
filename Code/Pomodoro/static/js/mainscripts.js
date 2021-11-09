@@ -43,6 +43,18 @@ function changeP1(){
 function changeP2(){
     document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/bamboo.jpg)";
 }
+function changeP3(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}
+function changeP4(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}
+function changeP5(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}  
+function changeP6(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+}  
 
 // 
 //  Begin JS for Media Player
@@ -92,6 +104,7 @@ function loadYoutube(){
 }
 
 
+
 // AJAX save YouTube video and update videos list
 function storeVideo() {
     console.log("Clicked save");
@@ -118,12 +131,18 @@ function storeVideo() {
     
     xhr.open("POST", "/youtube/save_video", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send("vidName=" + name + "&vidURL=" + inputURL);
+    xhr.send("vidName=" + name + "&vidURL=" + YTVideoID);
 }
+
+
+
 // Click on ID savedVideos to play video after AJAX call
 // Where comign from).on(event, )
-$(document).on('click', `.videoStored`, function() {
-    player.loadVideoById(YTVideoID);
+$(document).on('click', `#savedVideos tr`, function() {
+    console.log(this);
+    var urlID = this.id;
+    console.log(urlID);
+    player.loadVideoById(urlID);
 });
 
 

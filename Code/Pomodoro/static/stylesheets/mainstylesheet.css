@@ -423,6 +423,12 @@ Begin work for modal
   display: none;
 }
 
+.bg_buttton {
+  margin: 5px;
+  width: 200px; 
+  text-align: center;
+}
+
 /*CSS for Spotify Login */
 .lefthand2{
   position: absolute;

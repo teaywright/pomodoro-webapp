@@ -58,6 +58,8 @@ You will also need:
 
 ```pip install spotipy```
 
+```pip install flask-session```
+
 
 Following Commands are through Bash in Windows.  If you are using something else please use ​​  to see your translation
 
