@@ -47,7 +47,7 @@ def session_cache_path():
 app.secret_key = "secretKey"
 
 # How long someone stays logged in, starting when they log in
-app.permanent_session_lifetime = timedelta(minutes=5)
+app.permanent_session_lifetime = timedelta(hours=2)
 
 # Set location of database as a configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -74,7 +74,7 @@ class User(db.Model):
 
 class Video(db.Model):
     videoID = db.Column(db.Integer, primary_key=True)
-    youtubeID = db.Column(db.String(50), unique=True, nullable=False)
+    youtubeID = db.Column(db.String(50), unique=True)
     userVideos = db.relationship('UserVideo', backref='video')
 
     def __init__(self, YT_ID):
@@ -91,39 +91,36 @@ class UserVideo(db.Model):
     def __init__(self, name):
         self.given_name = name
 
-# class Playlist(db.Model):
-#    playlistID = db.Column(db.Integer, primary_key=True)
-#    playlistName = db.Column(db.String(20), default = 'default', nullable=False)
-#    forRest = db.Column(db.Boolean, default=True, nullable=False)
-#    playlistUsers = db.relationship('UserPlaylist', backref='owner')
-#
-#    def __init__(self, name):
-#        self.playlistName = name
-
-
-# class UserPlayist(db.Model):
-#    user_id = db.Column(db.Integer, db.ForeignKey("user.userID"), primary_key=True)
-#    playlist_id = db.Column(db.Integer, db.ForeignKey("playlist.playlistID"), primary_key=True)
-#    given_name = db.Column(db.String(20), default = 'default', nullable=False)
-#
-#    def __init__(self, givenName):
-#        self.given_name = givenName
 
 
 # begin URL decorators
 @app.route("/", methods=["POST", "GET"])  # route page / home page
 def main_page():
+    if request.method == "GET":
+        print("main sent get")
+        if "user" not in session:
+            print("user not in session")
+            return redirect(url_for("login"))
+        else:
+            return render_template("main.html")
+        
     if request.method == "POST":
-        #currUser = session["user"]
-        vidName = request.form.get('vidName')
-        vidURL = request.form.get('vidURL')
+        print("main sent post")
+        # If saving a video
+        if request.form.get("vidName"):
+            if "user" not in session:
+                return redirect(url_for("login"))
+            currUser = session["user"]
+            vidName = request.form.get('vidName')
+            vidURL = request.form.get('vidURL')
+    
+            vid_ID = addVideo(vidName, vidURL, "Guest")
 
-        vid_ID = addVideo(vidName, vidURL, "Guest")
-
-        #vid_ID = Video.query.filter_by(url=videoURL).first()
-        return str(vid_ID)
-    session["user"] = "Guest"
-    return render_template("main.html")
+            vid_ID = Video.query.filter_by(url=videoURL).first()
+            return str(vid_ID)
+        else:
+            print(session["user"])
+            return render_template("main.html")
 
 
 @app.route("/navbar")
@@ -140,19 +137,24 @@ def mediaPlayer():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
+        print("ok")
+        print("sent login post")
         session.permanent = True
+        print("WTF")
         inputName = request.form["nm"]
         inputPass = request.form["pass"]
+        print("Check0")
 
         # Check for matching saved username in db
         searchUser = User.query.filter_by(username=inputName).first()
+        print("Check1")
         if searchUser:
             # Save the user in the session
             session["user"] = inputName
-
+            print("Check2")
             # Check that an unhashed password matches one that has previously been hashed
             if bcrypt.checkpw(inputPass.encode('utf-8'), searchUser.hashedPass):
-                return redirect(url_for("user"))
+                return redirect(url_for("main_page"))
             else:
                 flash("Incorrect password!")
                 return render_template("login.html")
@@ -161,6 +163,7 @@ def login():
             return render_template("login.html")
 
     else:
+        print("sent login get")
         # Redirects if session saved login
         if "user" in session:
             # flash("Already logged in!")
@@ -220,6 +223,16 @@ def registration():
 
 @app.route("/admin", methods=["POST", "GET"])
 def admin():
+    if "user" in session:
+        currUser_userName = session["user"]
+        currUser = User.query.filter_by(username=currUser_userName).first()
+        currIsAdmin = currUser.isAdmin
+        if not currIsAdmin:
+            return redirect(url_for("main_page"))
+    else:
+        return redirect(url_for("login"))
+        
+
     if request.method == "POST":
         # Deleting a user
         if request.form.get("delete_user"):
@@ -258,11 +271,21 @@ def admin():
 
 @app.route("/youtube", methods=["POST", "GET"])
 def youtube():
-    currUserVids = UserVideo.query.all()
+    print("Check0")
+    if "user" not in session:
+        print("The user is not in the session")
+        exit()
+    print("Check 0.2")
+    currUserName = session["user"]
+    print("Check1")
+    currUser = User.query.filter_by(username=currUserName).first()
+    currUserVids = UserVideo.query.filter_by(user_id=currUser.userID).all()
     currYoutubeIDs = []
+    print("Check2")
     for usrVid in currUserVids:
         matchedVid = Video.query.filter_by(videoID=usrVid.video_id).first()
         currYoutubeIDs.append(matchedVid.youtubeID)
+    print("Check3")
 
     return render_template("/sharedTemplates/youtube.html", usrVideos=currUserVids, YT_IDs=currYoutubeIDs)
 
@@ -270,21 +293,54 @@ def youtube():
 @app.route("/youtube/save_video", methods=["POST", "GET"])
 def save_video():
     if request.method == "POST":
-        print(request.form)
-        print(session["user"])
-        print(request.form.get('vidName'))
-
         vidName = request.form.get('vidName')
         vidURL = request.form.get('vidURL')
         forUser = session["user"]
 
         usrVidID = addVideo(vidName, vidURL, forUser)
+        print()
 
         return str(usrVidID)
 #removes cache
 @app.route("/cache-remove")
 def removeCache():
     os.remove(".cache")
+
+# Deletes YT video by YT_ID from jquery request
+@app.route("/youtube/delete_video", methods=["POST", "GET"])
+def delete_video():
+    if request.method == "POST":
+        # Get youtube id from post request data
+        YTID_toDelete = request.json['yt_id']
+
+        # Get current user
+        currUser_name = session["user"]
+        currUser = User.query.filter_by(username=currUser_name).first()
+        currUser_userID = currUser.userID
+
+        # Query corresponding video
+        YT_clickedVid = Video.query.filter_by(youtubeID=YTID_toDelete).first()
+        selectedVidID = YT_clickedVid.videoID
+
+        # Query and delete corresponding UserVideo
+        usrVid_toDelete = UserVideo.query.filter_by(video_id=selectedVidID, user_id=currUser_userID).first()
+
+        if usrVid_toDelete:
+            db.session.delete(usrVid_toDelete)
+            db.session.commit()
+        else:
+            print("This video should not have been listed for this user")
+
+        # Check for remaining UserVideo references to the video
+        userVidRef = UserVideo.query.filter_by(video_id=selectedVidID).first()
+
+        # Delete video if no remaining references
+        if (not userVidRef):
+            db.session.delete(YT_clickedVid)
+            db.session.commit()
+
+    return "Done"
+
 
 @app.route("/spotify")
 def spotify():
@@ -405,6 +461,8 @@ def addVideo(name, YT_ID, forUsername):
     db.session.add(newUserVideo)
     db.session.commit()
 
+    return newUserVideo.video_id
+
 
 def test():
     print("test")
@@ -416,7 +474,6 @@ if __name__ == '__main__':
     # Refreshes and creates db
     db.drop_all()
     db.create_all()
-
 
 
     # Add all admin accounts
@@ -432,5 +489,6 @@ if __name__ == '__main__':
 
     for i in range(len(videoNames)):
         addVideo(videoNames[i], youtubeIDs[i], videoUsers[i])
+
 
     app.run(debug=True, host="0.0.0.0", port=5500)

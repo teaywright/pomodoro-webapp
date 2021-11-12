@@ -125,7 +125,8 @@ function storeVideo() {
         if (this.readyState == 4 && this.status == 200) {
             videosTable.innerHTML +=    `<tr id=${YTVideoID}>
                                             <td>` + xhr.responseText + `</td>
-                                            <td class='youtube_name'>${name}</td>
+                                            <td id="listedVidName">${name}</td>
+                                            <td><button id="deleteVidBtn">Delete</button></td>
                                         </tr>`;
         }
     }
@@ -139,13 +140,36 @@ function storeVideo() {
 
 // Click on ID savedVideos to play video after AJAX call
 // Where comign from).on(event, )
-$(document).on('click', `#savedVideos tr`, function() {
-    console.log(this);
-    var urlID = this.id;
-    console.log(urlID);
-    player.loadVideoById(urlID);
+$(document).ready(function() {
+    $(document).on('click', `#listedVidName`, function() {
+        console.log("Click to play saved vid");
+        console.log(this);
+        var rowSelect = $(this).closest("tr");   // Finds the closest row <tr>
+        console.log(rowSelect);
+        var urlID = rowSelect.attr("id");
+        console.log(urlID);
+        player.loadVideoById(urlID);
+    });
 });
 
+
+// Deleting videos
+$(document).ready(function() {
+    $(document).on('click', `#deleteVidBtn`, function() {
+        console.log("Click delete vid");
+        var rowSelect = $(this).closest("tr");   // Finds the closest row <tr>
+        var YT_videoID = rowSelect.attr("id");
+        console.log(YT_videoID);
+        rowSelect.remove();
+
+        $.ajax({
+            type : 'POST',
+            url : "/youtube/delete_video",
+            contentType: 'application/json;charset=UTF-8',
+            data : JSON.stringify({'yt_id': YT_videoID})
+        });
+    });
+});
 
 
 
