@@ -3,7 +3,7 @@
     -->  
     <div class="spotify-container center">  
         <div >
-            <label for="myPlaylistChoices"><a href="/playlists"></a></label>
+            <label for="myPlaylistChoices2"><a href="/playlists"></a></label>
             {% if playlists %}  
                 <select class="playlist-choice" id="myPlaylistChoices" name="myPlaylistChoices" onchange="spotifySwitchPlaylist()">
                     {% for item in playlists['items'] %} 
@@ -28,9 +28,10 @@
     </div>
     <script>   
            // each time user selects a playlist, the id gets updated in iframe src
-           function spotifySwitchPlaylist(playlist){
+           function spotifySwitchPlaylist(){
             //var x = document.getElementById("myPlaylistChoices").value;
             var i = document.getElementById("myPlaylistChoices").selectedIndex;
+            console.log("i val: ",i);
             var playlist = document.getElementById("myPlaylistChoices").options[i];
             var playlist_id=playlist.getAttribute("data-playlist-id");
             console.log("Playlist id selected: ", playlist_id);

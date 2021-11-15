@@ -1,39 +1,41 @@
- <!-- 
-        SPOTIFY SPACE HOLDER
-    -->  
-    <div class="spotify-container center">  
-        <div >
-            <button class="choice-button"><a href="/playlists">Choose a spotify playlist!</a></button>
-            {% if playlists %}
-                {% for item in playlists['items'] %}
-                    <div >
-                    <!-- <a href="/playlist/{{item.id}}">{{item.name}}></a> -->
-                    <a data-playlist-id="{{item.id}}" href="#" onclick="spotifySwitchPlaylist(this)">{{item.name}}></a>
-                </div>
+<div class="spotify-container center">  
+    <div >
+        <label for="myPlaylistChoices2"><a href="/playlists"></a></label>
+        {% if playlists %}  
+            <select class="playlist-choice" id="myPlaylistChoices2" name="myPlaylistChoices2" onchange="spotifySwitchPlaylist2()">
+                {% for item in playlists['items'] %} 
+                <option data-playlist-id="{{item.id}}" value="{{item.name}}">{{item.name}}</option>
                 {% endfor %}
-            {% endif %}
-        </div>
-    
-        <div id="mediaPlayer" class="center">
-            {% if playlist_id %}
-                <iframe class="spotify-iframe" id="spotify-playlist-iframe" src= "https://open.spotify.com/embed/playlist/{{playlist_id}}"
-                frameborder="0" 
-                allowtransparency=" true" 
-                allow="encrypted-media" 
-                allowfullscreen="" 
-                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
-                </iframe>
-            {% endif %}
-        </div>
+            </select>
+        {% endif %}
     </div>
-    <script>   
-           // each time user selects a playlist, the id gets updated in iframe src
-           function spotifySwitchPlaylist(playlist){
-               var playlist_id=playlist.getAttribute("data-playlist-id");
-               var sp_iframe=document.getElementById("spotify-playlist-iframe")
-               console.log("playlist id: ", playlist_id);
-               console.log("src:  ", sp_iframe.src);
-               sp_iframe.src="https://open.spotify.com/embed/playlist/" + playlist_id;
-               console.log(sp_iframe.src);  
-           }
+
+    <div id="mediaPlayer" class="center">
+        {% if playlist_id %}
+            <iframe class="spotify-iframe" id="spotify-playlist-iframe2" src= "https://open.spotify.com/embed/playlist/{{playlist_id}}"
+            frameborder="0" 
+            allowtransparency="true" 
+            allow="encrypted-media" 
+            height = "90%"
+            allowfullscreen="" 
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+            </iframe>
+        {% endif %}
+    </div>
+</div>
+<script>   
+       // each time user selects a playlist, the id gets updated in iframe src
+    function spotifySwitchPlaylist2(){
+        //var x = document.getElementById("myPlaylistChoices").value;
+        var j = document.getElementById("myPlaylistChoices2").selectedIndex;
+        console.log("j val: ",j);
+        var playlist = document.getElementById("myPlaylistChoices2").options[j];
+        var playlist_id=playlist.getAttribute("data-playlist-id");
+        console.log("Playlist id selected: ", playlist_id);
+        var sp_iframe=document.getElementById("spotify-playlist-iframe2")
+        console.log("playlist id: ", playlist_id);
+        console.log("src:  ", sp_iframe.src);
+        sp_iframe.src="https://open.spotify.com/embed/playlist/" + playlist_id;
+        console.log(sp_iframe.src);  
+    }
     </script>
