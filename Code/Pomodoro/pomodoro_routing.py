@@ -13,7 +13,7 @@ import json
 # imports used for/with spotify api
 import os
 from flask import Flask, session, request, redirect, render_template
-from flask_session import  Session
+from flask_session import Session
 import spotipy as sp
 import uuid
 from spotipy.oauth2 import SpotifyOAuth
@@ -227,17 +227,20 @@ def admin():
             userToDelete = User.query.filter_by(userID=selectedUserID).first()
 
             # Delete associated UserVideo records
-            userVidsToDelete = UserVideo.query.filter_by(user_id=userToDelete.userID).all()
+            userVidsToDelete = UserVideo.query.filter_by(
+                user_id=userToDelete.userID).all()
             for usrVid in userVidsToDelete:
                 # Get video associated with UserVideo
-                associatedVid = Video.query.filter_by(videoID=usrVid.video_id).first()
+                associatedVid = Video.query.filter_by(
+                    videoID=usrVid.video_id).first()
 
                 # Delete UserVideo
                 db.session.delete(usrVid)
                 db.session.commit()
 
                 # Delete video if no longer associated with any UserVideo
-                relatedUsrVid = UserVideo.query.filter_by(video_id=associatedVid.videoID).first()
+                relatedUsrVid = UserVideo.query.filter_by(
+                    video_id=associatedVid.videoID).first()
                 if (not relatedUsrVid):
                     db.session.delete(associatedVid)
                     db.session.commit()
@@ -246,7 +249,7 @@ def admin():
             db.session.delete(userToDelete)
             db.session.commit()
             flash(f"Deleted {userToDelete.username}")
-            
+
     # if an admin:
     return render_template("admin.html", users=User.query.all(), videos=Video.query.all(), userVideos=UserVideo.query.all())
     # else:
@@ -267,6 +270,16 @@ def youtube():
     return render_template("/sharedTemplates/youtube.html", usrVideos=currUserVids, YT_IDs=currYoutubeIDs)
 
 
+@app.route("/youtube2", methods=["POST", "GET"])
+def youtube2():
+    currUserVids = UserVideo.query.all()
+    currYoutubeIDs = []
+    for usrVid in currUserVids:
+        matchedVid = Video.query.filter_by(videoID=usrVid.video_id).first()
+        currYoutubeIDs.append(matchedVid.youtubeID)
+    return render_template("/sharedTemplates/youtube2.html", usrVideos=currUserVids, YT_IDs=currYoutubeIDs)
+
+
 @app.route("/youtube/save_video", methods=["POST", "GET"])
 def save_video():
     if request.method == "POST":
@@ -281,10 +294,13 @@ def save_video():
         usrVidID = addVideo(vidName, vidURL, forUser)
 
         return str(usrVidID)
-#removes cache
+# removes cache
+
+
 @app.route("/cache-remove")
 def removeCache():
     os.remove(".cache")
+
 
 @app.route("/spotify")
 def spotify():
@@ -298,7 +314,7 @@ def spotify():
 # for when spotify auth returns authorization code
 @app.route("/spotify-auth/<code>")
 def spotify_auth():
-    
+
     print("spot auth enter....")
     sp_scope = 'playlist-read-private'
     auth_manager = sp.oauth2.SpotifyOAuth(scope=sp_scope, show_dialog=True)
@@ -310,7 +326,7 @@ def spotify_auth():
 
     if not auth_manager.validate_token(token):
         # Step 2. Display sign in link when no token
-        
+
         auth_url = auth_manager.get_authorize_url()
         return render_template('spotify_login.html', auth_url=auth_url)
 
@@ -416,8 +432,6 @@ if __name__ == '__main__':
     # Refreshes and creates db
     db.drop_all()
     db.create_all()
-
-
 
     # Add all admin accounts
     adminUsernames = ["Guest", "Daniel", "Uri", "Josh", "Aiden", "Tea", "Yan"]
