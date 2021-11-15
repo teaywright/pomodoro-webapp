@@ -12,7 +12,8 @@
           {% for vid in usrVideos %}
           <tr id={{ YT_IDs[loop.index - 1] }}>
             <td>{{ loop.index }}</td>
-            <td>{{ vid.given_name }}</td>
+            <td id="listedVidName">{{ vid.given_name }}</td>
+            <td><button id="deleteVidBtn">Delete</button></td>
           </tr>
           {% endfor %}
       </tbody>
