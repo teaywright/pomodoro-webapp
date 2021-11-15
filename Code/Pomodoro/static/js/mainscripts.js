@@ -19,9 +19,16 @@ function switchSides(){
         $("#lefthand").addClass("blocker-white-to-black");
         $("#righthand").removeClass("blocker-white-to-black");
         $("#righthand").addClass("blocker-black-to-white");
-        sideSwapSound.play();        
+        try {
+            player.pauseVideo();
+            player2.playVideo();
+        }
+        catch(err) {
+            console.log("No video to play");
+        }
+        sideSwapSound.play();
         detectSide = 0;
-        player.pauseVideo();
+        
     } else {
         mainContainer.classList.add("animateGrowWork");
         mainContainer.classList.remove("animateShrinkWork");
@@ -31,7 +38,13 @@ function switchSides(){
         $("#lefthand").addClass("blocker-black-to-white");
         $("#righthand").removeClass("blocker-black-to-white");
         $("#righthand").addClass("blocker-white-to-black");
-        
+        try{
+            player.playVideo();
+            player2.pauseVideo();
+        }
+        catch(err){
+            console.log("No video to play");
+        }
         sideSwapSound.play();
         detectSide = 1;
     }
@@ -62,9 +75,13 @@ function changeP6(){
 // 
 //Remove The buttons and Choose the Player:
 function mediaChoice(userChoice){
-    document.getElementById("mediaPlayerChoice").remove();
     if(userChoice == "youtube"){
-        loadYoutube();
+        document.getElementById("mediaPlayerChoice").remove();
+        loadYoutube('1');
+    }
+    if(userChoice == "youtube2"){
+        
+        loadYoutube('2');
     }
     if(userChoice == "spotify"){
         loadSpotify();
@@ -72,9 +89,11 @@ function mediaChoice(userChoice){
 }
 
 //Remove Youtube to return to maindiv
-function returnMain(){
-    $( "#mediaPlayer-container" ).load("/mediaPlayer #mediaPlayer-container > *");
-    
+function returnMain1(){
+    $( ".mediaPlayer1" ).load("/mediaPlayer .mediaPlayer1 > *");
+}
+function returnMain2(){
+    $( ".mediaPlayer2" ).load("/mediaPlayer .mediaPlayer2 > *");
 }
 
 // AJAX spotify section:
@@ -91,32 +110,56 @@ function loadSpotify(){
 }
 
 // Asynch load youtube:
-function loadYoutube(){
+function loadYoutube(side){
     //Asynch
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
-        if(xhr.readyState === 4){
-            document.getElementById('mediaPlayer-container').innerHTML = xhr.responseText;
-            onYouTubeIframeAPIReady();
+        if(xhr.readyState === 4 && side == '1'){
+            document.getElementsByClassName("mediaPlayer1")[0].innerHTML = xhr.responseText;
+            onYouTubeIframeAPIReady('1');
+        }
+        if(xhr.readyState === 4 && side == '2'){
+            document.getElementsByClassName("mediaPlayer2")[0].innerHTML = xhr.responseText;
+            onYouTubeIframeAPIReady('2');
         }
     };
-    xhr.open('GET', '/youtube');
-    xhr.send();
+    if(side == '1'){
+        xhr.open('GET', '/youtube');
+        xhr.send();
+    }
+    if(side == '2'){
+        xhr.open('GET', '/youtube2');
+        xhr.send();
+    }
 }
 
 
 
 // AJAX save YouTube video and update videos list
-function storeVideo() {
+function storeVideo(side) {
     console.log("Clicked save");
-    var inputURL = document.getElementById("urlYoutube").value;
-    var YTVideoID = YouTubeGetID(inputURL);
+    let YTVideoID;
+    if(side == '1'){    
+        console.log("Saving video 1");
+        let inputURL = document.getElementById("urlYoutube").value;
+        YTVideoID = YouTubeGetID(inputURL);
 
-    if (YTVideoID == inputURL) {
-        alert("Invalid url");
-        return;
+        if (YTVideoID == inputURL) {
+            alert("Invalid url");
+            return;
+        }
     }
-    
+    if(side == '2'){
+        console.log("Saving video 2");
+        let inputURL = document.getElementById("urlYoutube2").value;
+        YTVideoID = YouTubeGetID(inputURL);
+
+        if (YTVideoID == inputURL) {
+            alert("Invalid url");
+            return;
+        }
+    }
+    console.log("Saving video " + YTVideoID);
     var name = document.getElementById("Video Name").value;
     var videosTable = document.getElementById("savedVideos");
 
@@ -197,35 +240,57 @@ function onPlayerStateChange(event) {
         done = true;
     }
 }
-// Builds a new Youtube IFrame
+// Builds a new Youtube IFrame Left Side
 var player;
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        height: '50%',
-        width: 'auto',
-        videoId: '5qap5aO4i9A',
-        playerVars: {
-        'playsinline': 1
-        },
-        events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-        }
-    });
+var player2;
+function onYouTubeIframeAPIReady(side) {
+    if(side == '1'){
+        player = new YT.Player('player', {
+            height: '50%',
+            width: 'auto',
+            videoId: '5qap5aO4i9A',
+            playerVars: {
+            'playsinline': 1
+            },
+            events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+    if(side == '2'){
+        player2 = new YT.Player('player2', {
+            height: '50%',
+            width: 'auto',
+            videoId: '5qap5aO4i9A',
+            playerVars: {
+            'playsinline': 1
+            },
+            events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+            }
+        });
+    }
 }
+
 // Helper function to REGEX and rip out the video ID from the URL regardless of how received.
 function YouTubeGetID(url){
     url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
 }
 // Function to "change channel" on Youtube
-function changeYoutube(){
+function changeYoutube1(){
     console.log('inside changeyoutube')
     let input=YouTubeGetID(document.getElementById("urlYoutube").value);
     player.loadVideoById(input);
     document.getElementById("urlYoutube").value = "";
 }
-
+function changeYoutube2(){
+    let input=YouTubeGetID(document.getElementById("urlYoutube2").value);
+    player2.loadVideoById(input);
+    document.getElementById("urlYoutube2").value = "";
+}
 
 /*
 Start JS for login and registration
