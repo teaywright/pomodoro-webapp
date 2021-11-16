@@ -1,18 +1,19 @@
 
 <div id="player"></div>
 <div id="videoChooseInput">
-    <input type="text" id="Video Name" name="vidName" placeholder="Input Name for a Youtube Videozzzzzz">
-    <input type="text" id="urlYoutube" name="vidURL" placeholder="Input URL for a Youtube Videozzzzzz">
-    <button onclick=changeYoutube()>Play Video:</button>
-    <button onclick=returnMain()>Go back:</button>
-    <button onclick=storeVideo()>saveVideo:</button>
+    <input type="text" id="Video Name" name="vidName" placeholder="Input Name for a Youtube Video">
+    <input type="text" id="urlYoutube" name="vidURL" placeholder="Input URL for a Youtube Video">
+    <button onclick=changeYoutube1()>Play Video:</button>
+    <button onclick=returnMain1()>Go back:</button>
+    <button onclick=storeVideo('1')>saveVideo:</button>
     <div class='videoStored'>
       <table>
         <tbody id="savedVideos">
           {% for vid in usrVideos %}
           <tr id={{ YT_IDs[loop.index - 1] }}>
             <td>{{ loop.index }}</td>
-            <td>{{ vid.given_name }}</td>
+            <td id="listedVidName">{{ vid.given_name }}</td>
+            <td><button id="deleteVidBtn">Delete</button></td>
           </tr>
           {% endfor %}
       </tbody>
