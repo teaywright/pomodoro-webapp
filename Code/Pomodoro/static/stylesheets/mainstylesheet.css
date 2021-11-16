@@ -185,9 +185,9 @@ animation:slide-out-left-bg 3s cubic-bezier(.55, .085,.68,.53) 1s both;
   margin: auto;   
 }
 #clock {
-  margin-top: 5%;
+  margin-top: 10%;
   outline: blue groove 1px;
-  height: 25%;
+  height: 15%;
   width: 30%;
   -webkit-animation: clockEntrance 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 3.5s both;
   animation: clockEntrance 1.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) 3.5s both;

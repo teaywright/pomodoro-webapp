@@ -4,9 +4,17 @@ Anything you make in here will be duplicated in both sides of clock
 To switch sides call "switchSides() in the shared JS file"
  -->
  <div id="clock" class="center">
-    <p>
-        <button class="next" id="countdownChill">Time left</button>
-        <button class="reset" onclick = "onClickFunction()">Reset</button>
-        <button class="Pause" id="PauseChill" onclick="onClickPauseChill()">Pause</button>
-    </p>
+    <div class="container">
+        <div class="row">
+            <button class="next" id="countdownChill">Time left</button>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <button class="reset" onclick = "onClickFunction()">Reset</button>
+            </div>
+            <div class="col-md">
+                <button class="Pause" id="PauseChill" onclick="onClickPauseChill()">Pause</button>
+            </div>
+        </div>
+    </div>
 </div>

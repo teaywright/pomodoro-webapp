@@ -4,12 +4,28 @@ Anything you make in here will be duplicated in both sides of clock
 To switch sides call "switchSides() in the shared JS file"
  -->
  <div id="clock" class="center">
-    <p>
-        <button class="next" id="countdown">Time left</button>
-        <button class="reset" onclick = "onClickFunction()">Reset</button>
-        <button class="start" id="start" onclick="onClick2()">Start</button>
-        <button class="Pause" id="Pause" onclick="onClickPause()">Pause</button>
-        <input id = "minutes"; input type = "text" name="Minutes" placeholder = "Minutes"/>
-        <input id = "seconds"; input type = "text" name="Seconds" placeholder = "Seconds"/>
-    </p>
+     <div class="container">
+        <div class="row">
+            <button class="next" id="countdown">Time left</button>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <button class="reset" onclick = "onClickFunction()" >Reset</button>
+            </div>
+            <div class="col-sm">
+                <button class="start" id="start" onclick="onClick2()">Start</button>
+            </div>
+            <div class="col-sm">
+                <button class="Pause" id="Pause" onclick="onClickPause()">Pause</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <input id = "minutes"; input type = "text" name="Minutes" placeholder = "Minutes"/>
+            </div>
+            <div class="col-md">
+                <input id = "seconds"; input type = "text" name="Seconds" placeholder = "Seconds"/>
+            </div>
+        </div>
+    </div>
 </div>
