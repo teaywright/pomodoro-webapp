@@ -30,6 +30,7 @@ function onClick2(goodTime){
         minutes = minutes*60;
         countTime = minutes + seconds;
         startTime = countTime;
+        $(".workbutton, .chillbutton").toggle();
     } else {
         countTime = goodTime;
     }
@@ -47,6 +48,7 @@ function onClick2(goodTime){
 
         if(isPaused == true){
             clearInterval(x);
+            $(".workbutton, .chillbutton").toggle();
         }
         
         if (distance <= 0) {
@@ -71,7 +73,6 @@ function onClickFunction(){
 
 function onClickPause(){
     pauseTracker = distance;
-
     if(isPaused == false){
         document.getElementById("Pause").innerHTML = "Resume";
         isPaused = true;
@@ -81,5 +82,12 @@ function onClickPause(){
         document.getElementById("Pause").innerHTML = "Pause";
         isPaused = false;
         onClick2(pauseTracker);
+        $(".workbutton, .chillbutton").toggle();
     }
 }
+// if(isPaused == true || minutes != 0 && seconds != 0){
+//     $("#chillButton").remove();
+// }
+// if(isPaused == true ){
+//     $("#workbutton").remove();
+// }
