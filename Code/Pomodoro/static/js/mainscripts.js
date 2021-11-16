@@ -58,17 +58,20 @@ function changeP2(){
     document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/bamboo.jpg)";
 }
 function changeP3(){
-    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/panda.jpg)";
 }
 function changeP4(){
-    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/panda_face.jpg)";
 }
 function changeP5(){
-    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/panda_ink.jpg)";
 }  
 function changeP6(){
-    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/.jpg)";
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/panda_bamboo.jpg)";
 }  
+function changeP7(){
+    document.getElementById("mainBackground").style.backgroundImage = "url(../static/pictures/banboo_leaves.png)";
+} 
 
 // 
 //  Begin JS for Media Player
