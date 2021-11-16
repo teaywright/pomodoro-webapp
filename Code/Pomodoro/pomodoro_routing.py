@@ -97,7 +97,6 @@ class UserVideo(db.Model):
 @app.route("/", methods=["POST", "GET"])  # route page / home page
 def main_page():
     if request.method == "GET":
-        print("main sent get")
         if "user" not in session:
             print("user not in session")
             return redirect(url_for("login"))
@@ -105,7 +104,6 @@ def main_page():
             return render_template("main.html")
         
     if request.method == "POST":
-        print("main sent post")
         # If saving a video
         if request.form.get("vidName"):
             if "user" not in session:
@@ -119,7 +117,6 @@ def main_page():
             vid_ID = Video.query.filter_by(url=videoURL).first()
             return str(vid_ID)
         else:
-            print(session["user"])
             return render_template("main.html")
 
 
@@ -137,21 +134,15 @@ def mediaPlayer():
 @app.route("/login", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        print("ok")
-        print("sent login post")
         session.permanent = True
-        print("WTF")
         inputName = request.form["nm"]
         inputPass = request.form["pass"]
-        print("Check0")
 
         # Check for matching saved username in db
         searchUser = User.query.filter_by(username=inputName).first()
-        print("Check1")
         if searchUser:
             # Save the user in the session
             session["user"] = inputName
-            print("Check2")
             # Check that an unhashed password matches one that has previously been hashed
             if bcrypt.checkpw(inputPass.encode('utf-8'), searchUser.hashedPass):
                 return redirect(url_for("main_page"))
@@ -163,7 +154,6 @@ def login():
             return render_template("login.html")
 
     else:
-        print("sent login get")
         # Redirects if session saved login
         if "user" in session:
             # flash("Already logged in!")
@@ -202,13 +192,14 @@ def logout():
 def registration():
     if request.method == "POST":
         inputName = request.form["createName"]
-        inputPass = request.form["createPass"]
+        inputPass = request.form["Password"]
 
         # Check if username is already taken
         foundUser = User.query.filter_by(username=inputName).first()
         if foundUser:
             flash("Username already taken!")
         else:
+            print("Hashing password")
             # Hash a password for the first time, with a randomly-generated salt
             passHash = bcrypt.hashpw(
                 inputPass.encode('utf-8'), bcrypt.gensalt())
@@ -274,21 +265,16 @@ def admin():
 
 @app.route("/youtube", methods=["POST", "GET"])
 def youtube():
-    print("Check0")
     if "user" not in session:
         print("The user is not in the session")
         exit()
-    print("Check 0.2")
     currUserName = session["user"]
-    print("Check1")
     currUser = User.query.filter_by(username=currUserName).first()
     currUserVids = UserVideo.query.filter_by(user_id=currUser.userID).all()
     currYoutubeIDs = []
-    print("Check2")
     for usrVid in currUserVids:
         matchedVid = Video.query.filter_by(videoID=usrVid.video_id).first()
         currYoutubeIDs.append(matchedVid.youtubeID)
-    print("Check3")
 
     return render_template("/sharedTemplates/youtube.html", usrVideos=currUserVids, YT_IDs=currYoutubeIDs)
 
@@ -311,7 +297,6 @@ def save_video():
         forUser = session["user"]
 
         usrVidID = addVideo(vidName, vidURL, forUser)
-        print()
 
         return str(usrVidID)
 # removes cache
