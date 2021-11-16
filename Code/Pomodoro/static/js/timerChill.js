@@ -13,12 +13,12 @@ var isPausedChill = new Boolean(false);
 function loadTimes(min, sec){
     //console.log("called");
     //console.log("before" +min+ "m " +sec+ "s");
-    min = 60 - min;
+    min = min/3;
     //sec = 60 - sec;
     if(sec == 0){
         sec = 0;
     } else {
-        sec = 60 - sec;
+        sec = sec/3;
         min = min - 1;
     }
     //console.log("after" +min+ "m " +sec+ "s");
