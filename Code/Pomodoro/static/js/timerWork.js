@@ -12,8 +12,8 @@ var isPaused = new Boolean(false);
 
 function onClick2(goodTime){
     console.log("Work time starting");
+    document.getElementById("start").disabled = true;
 
-    
 
     if(goodTime == undefined){
         var minBox = document.getElementById("minutes").value;
